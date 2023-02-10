@@ -69,7 +69,7 @@ not leap year -- 2023
 ## Requirements
 
 - Ksh93, Bash or Zsh
-- GNU/AST/busybox date (optional)
+- GNU/BSD/AST/busybox date (optional)
 - Bc (optional)
 
 

@@ -1,4 +1,4 @@
-# NOTES
+# Notes
 Following notes are taken from [d-test](tests/d-test.sh#L78-L186).
 
 ---
@@ -8,7 +8,7 @@ debug checkign errors as `date` programme has got undefined behaviour
 interpreting dates without timezone settings!
 
 
-## LOG
+## Log
 ### v0.16.6
 Compound range testing:
 
@@ -35,7 +35,7 @@ Result differences remain the same, we detect false-positive errors thanks to ad
 - Remaining date results match although with different refinements (our results are little more refined than `datediff`).
 
 
-## OLDER LOG FROM SCRIPT SOURCE
+## Older Log
 Hroptatyr's `man datediff` says \`\`refinement rules'' cover over 99% cases.
 
 Calculated C-code `datediff` error rate is at least 0.26% of total tested dates (compound range).
@@ -55,7 +55,7 @@ Offset-aware date results passed checking against \`datediff' as of v0.21.
 Ksh exec time is ~2x faster than Bash (main function).
 
 
-## MORE NOTES
+## More Notes
 
 ### Time zone / Offset support
 dbplunkett: <https://stackoverflow.com/questions/38641982/converting-date-between-timezones-swift>
@@ -128,13 +128,13 @@ with an integer bit of 1 and can have as few as one significant bit.
     	to about 9,223,372,036,854,775,807 seconds, which is about
     	292 billions years!
     
-    	Please check limitations of \`date' programme of your system!
+    	Please check limitations of `date' programme of your system!
     
     	The moon phase function (adapted and improved from HackLib) is
     	a quantized version (only 8 phases) of formula and is only an
     	approximation of reality.
     
-    	\`\`The definition of Easter as \`the first Sunday after the first
+    	``The definition of Easter as `the first Sunday after the first
     	full moon occurring on or after the vernal equinox' seems precise,
     	but accurate determination of the full moon and the vernal equinox
     	is quite complex in reality, and simpler approximations are used

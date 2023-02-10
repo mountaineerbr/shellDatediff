@@ -76,10 +76,7 @@ wait
 echo "N=$n"
 
 #NOTES
-#Year 1988==4405104; Year 1989==4304988; total==8.710.092
-#2*6*8*4*3*3 * 9*3*3*3*2*6 == 10077696
-
-#Note input dates must have time zone, even if set to +00:00, to avoid
+#Input dates must have time zone, even if set to +00:00, to avoid
 #debug checkign errors as `date' programme has got undefined behaviour
 #interpreting dates without timezone settings!
 

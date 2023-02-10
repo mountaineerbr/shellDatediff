@@ -75,9 +75,9 @@ not leap year -- 2023
 
 ## See Also
 
-- C-code \`dateutils/datediff', Hroptatyr, <www.fresse.org/dateutils/>.
-- Python \`PDD', Jarun,	<github.com/jarun/pdd>.
-- AST \`date', see elapsed time option -E, <github.com/att/ast>.
+- C-code \`dateutils/datediff', Hroptatyr, <http://www.fresse.org/dateutils/>.
+- Python \`PDD', Jarun,	<https://github.com/jarun/pdd>.
+- AST \`date', see elapsed time option -E, <https://github.com/att/ast>.
 - GNU \`Units', <https://www.gnu.org/software/units/>.
 - \`\`Calendrical calculation'', Dershowitz and Reingold, 1990,	<http://www.cs.tau.ac.il/~nachum/papers/cc-paper.pdf>.
 

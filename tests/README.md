@@ -1,5 +1,5 @@
 # Notes
-Following notes are taken from [d-test](tests/d-test.sh#L78-L186).
+Following notes are taken from [d-test](d-test.sh#L78-L186).
 
 ---
 

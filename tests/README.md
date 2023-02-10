@@ -17,12 +17,12 @@ Compound range testing:
 - .10577, about 11% of error testing results are due to shell arithmetics outputting negative days.
 - .04720, at least 5% of other times we are probably right, too, as well as `datediff` (different ways of counting).
 
-###v0.16.7    (addon2)
+### v0.16.7 (addon2)
 - .4570, about 45% of errors detected in testing are C-code `datediff` only errs (12636/27644) (compound range).
 - Result differences remain the same, we detect false-positive errors thanks to addon2 code.
 - It fixes most negative day ranges but takes apart a full month in these cases, which makes result more refined than C-code `datediff` and equally correct.
 
-###v0.16.8    (addon2+addon3)
+### v0.16.8 (addon2+addon3)
 - Addon3 prevents breaking a full month from count and delivers correct results, specially when dayA is \`31'. 
 Result differences remain the same, we detect false-positive errors thanks to addon3 code. We cannot really see bad range results any more but we note that we count differently than C-code `datediff` in some cases.
 - Testing was performed on 4,405,104 pairs of dates for 1988 vs. 1989 (compound range):
@@ -103,12 +103,14 @@ with an integer bit of 1 and can have as few as one significant bit.
 <https://www.lahey.com/float.htm>
 
 
+
     4.3. Unknown Local Offset Convention
        If the time in UTC is known, but the offset to local time is unknown,
        this can be represented with an offset of "-00:00".  This differs
        semantically from an offset of "Z" or "+00:00", which imply that UTC
        is the preferred reference point for the specified time.  RFC2822
        [IMAIL-UPDATE] describes a similar convention for email.
+
 
 
     LIMITS

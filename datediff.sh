@@ -1456,4 +1456,4 @@ elif ((OPTFF))
 then 	friday_13th "$@"
 else
 	mainf "$@"
-fi
+fi 

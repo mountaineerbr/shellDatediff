@@ -9,7 +9,7 @@ time separately or taking account of each other. It may warp `date`
 package to process input date strings, otherwise input must be
 ISO-8601 or UNIX times.
 
-Extensively tested, see [testing scripts](tests/) and [notes](tests/d-test.sh#L78).
+Extensively tested, see [testing scripts](tests/) and [notes](tests/d-test.sh#L78-L186).
 
 
 ## Features

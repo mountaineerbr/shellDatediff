@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.23.2  jan/2023  mountaineerbr  GPLv3+
+# v0.23.3  jan/2023  mountaineerbr  GPLv3+
 [[ $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -612,12 +612,13 @@ function unix_toiso
 #usage: friday_13th [weekday_name] [day] [start_year]
 function friday_13th
 {
-	typeset dow_name d_tgt diw_tgt day month year unix diw d_away maxday skip n
+	typeset glob1 glob2 dow_name d_tgt diw_tgt day month year unix diw d_away maxday skip n
 	dow_name=("${DAY_OF_WEEK[@]}") ;DAY_OF_WEEK=(0 1 2 3 4 5 6)
+	glob1='[SsMmTtWwFf]*' glob2='?([0-3])[0-9]'
 
 	#set day of week and day of month
-	[[ $2 = [SsMmTtWwFf]* && $1 = ?([0-3])[0-9] ]] && set -- "$2" "$1" "${@:3}"
-	if [[ $1 = [SsMmTtWwFf]* && $2 = ?([0-3])[0-9] ]]
+	[[ $2 = $glob1 ]] && set -- "${@:2:1}" "${@:1:1}" "${@:3}"
+	if [[ $1 = $glob1 ]]
 	then 	case $1 in
 			[Ss][Aa]*) 	diw_tgt=${DAY_OF_WEEK[2]};;
 			[Ff]*) 	diw_tgt=${DAY_OF_WEEK[1]};;
@@ -626,12 +627,12 @@ function friday_13th
 			[Tt]*) 	diw_tgt=${DAY_OF_WEEK[5]};;
 			[Mm]*) 	diw_tgt=${DAY_OF_WEEK[4]};;
 			[Ss]*) 	diw_tgt=${DAY_OF_WEEK[3]};;
-		esac
-		d_tgt=$2 ;shift 2
-	fi ;diw_tgt=${diw_tgt:-1} d_tgt=${d_tgt:-13}
+		esac ;shift
+	fi ;diw_tgt=${diw_tgt:-1}
 
-	[[ $1 ]] || set -- $(get_timef) ;set -- ${*//[$SEP]/ }
-	day="${3#0}"    month="${2#0}"      year="${1##+(0)}"
+	[[ $1 = $glob2 ]] && { 	d_tgt=$1 && shift ;} || d_tgt=13
+	IFS="$IFS$SEP" ;set -- $* ;(($#)) || set -- $(get_timef) ;IFS=$' \t\n'
+	day="${3#0}"    month="${2#0}"      year="${1##*(0)}"
 	day="${day:-1}" month="${month:-1}" year="${year:-0}"
 	
 	unix=$(datefun ${year}-${month}-${day} +%s) ||
@@ -640,20 +641,20 @@ function friday_13th
 	while diw=$(get_day_in_week $((unix+(d_away*24*60*60) )) )
 	do 	if ((diw==diw_tgt && day==d_tgt))
 		then 	if ((!(d_away+OPTVERBOSE+OPTFF-1) ))
-			then 	printf "%s, %02d %s %04d is today!\n" \
-				"${dow_name[diw_tgt]:0:3}" "$day" "${MONTH_OF_YEAR[month-1]:0:3}" "$year"
+			then 	printf "${TIME_RFC5322_FMT_PF:0:20} is today!\n" \
+				"${dow_name[diw_tgt]}" "$day" "${MONTH_OF_YEAR[month-1]}" "$year"
 			elif ((OPTVERBOSE))
-			then 	printf "%04d-%02d-%02d\n" "$year" "$month" "$day"
-			else 	printf "%s, %02d %s %04d is %4d days away\n" \
-				"${dow_name[diw_tgt]:0:3}" "$day" "${MONTH_OF_YEAR[month-1]:0:3}" "$year" "$d_away"
+			then 	printf "${TIME_ISO8601_FMT_PF:0:14}\n" "$year" "$month" "$day"
+			else 	printf "${TIME_RFC5322_FMT_PF:0:20} is %4d days away\n" \
+				"${dow_name[diw_tgt]}" "$day" "${MONTH_OF_YEAR[month-1]}" "$year" "$d_away"
 			fi
 			((++n))
 			((OPTFF==1||(OPTFF==2&&n>=10) )) && break
 		fi
-		maxday=$(month_maxday $month $year)
-		if ((day<d_tgt))
+		if ((day<d_tgt))  #days away
 		then 	((d_away=d_tgt-day, day=d_tgt, skip=1))
-		elif ((day>d_tgt))
+		elif 	maxday=$(month_maxday $month $year)
+			((day>d_tgt))
 		then 	((d_away=(maxday-day+d_tgt), day=d_tgt))
 		else 	((d_away+=maxday))
 		fi
@@ -1456,4 +1457,4 @@ elif ((OPTFF))
 then 	friday_13th "$@"
 else
 	mainf "$@"
-fi 
+fi

@@ -1,8 +1,8 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.23.3  jan/2023  mountaineerbr  GPLv3+
-[[ $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
-[[ $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
+# v0.23.4  feb/2023  mountaineerbr  GPLv3+
+[[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
+[[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
 HELP="NAME
 	${0##*/} - Calculate time ranges/intervals between dates
@@ -289,14 +289,14 @@ function datefun
 
 	#ISO8601 variable length
 	globtest="*([$IFS])@($GLOBDATE?([$SEP])?(+([$SEP])$GLOBTIME)|$GLOBTIME)?([$SEP])*([$IFS])"
-	if [[ $1 = $globtest && ! $OPTF && $ASTDATE$BSDDATE$BUSYDATE ]]  #ISO8601 variable length
+	if [[ $1 = $globtest && -z $OPTF && -n $ASTDATE$BSDDATE$BUSYDATE ]]  #ISO8601 variable length
 	then 	ar=(${1//[$SEP]/ })
 		[[ ${1//[$IFS]} = +([0-9])[:]* ]] && start=9 || start=0
 		((chars=(${#ar[@]}*2)+(${#ar[@]}-1) , variable_iso=1))
 	fi
 
 	if ((BSDDATE))
-	then 	if [[ ! $1 ]]
+	then 	if [[ -z $1 ]]
 		then 	set --
 		elif ((variable_iso))
 		then 	${DATE_CMD} ${options} -j -f "${TIME_ISO8601_FMT:$start:$chars}" "${@/$GLOBUTC}" && return
@@ -522,9 +522,9 @@ function get_timef
 	input=${1#@}  fmt="${2:-${TIME_ISO8601_FMT}}"
 	if ((OPTDD))
 	then 	echo $EPOCH ;false
-	elif [[ $ZSH_VERSION ]]
+	elif [[ -n $ZSH_VERSION ]]
 	then 	zmodload -aF zsh/datetime b:strftime && strftime "$fmt" $input
-	elif [[ $BASH_VERSION ]]
+	elif [[ -n $BASH_VERSION ]]
 	then  	printf "%(${fmt})T\n" ${input:--1}
 	else 	printf "%(${fmt})T\n" ${input:+$(unix_toiso $input)}
 	fi
@@ -684,7 +684,7 @@ function prHelpf
 	#(A)
 	SS=  val=${1#-} val=${val#0} valx=${val//[0.]} int=${val%.*}
 	[[ $val = *.* ]] && dec=${val#*.} dec=${dec//0}
-	[[ $1 && $OPTT ]] || ((valx)) || return
+	[[ -n $1 && -n $OPTT ]] || ((valx)) || return
 	(( int>1 || ( (int==1) && (dec) ) )) && SS=s
 	return 0
 }
@@ -708,21 +708,21 @@ function mainf
 		{
 		date1_iso8601=$(datefun -Iseconds @"$unix1")
 		date2_iso8601=$(datefun -Iseconds @"$unix2")
-		if [[ ! $OPTVERBOSE && $OPTRR ]]
+		if [[ -z $OPTVERBOSE && -n $OPTRR ]]
 		then 	date1_iso8601_pr=$(datefun -R @"$unix1")
 			date2_iso8601_pr=$(datefun -R @"$unix2")
 		fi
 		}  2>/dev/null  #avoid printing errs from FreeBSD<12 `date'
 	else 	unset unix1 unix2
 		#set default date -- AD
-		[[ ! $1 || ! $2 ]] && now=$(get_timef)
-		[[ ! $1 ]] && { 	set -- "${now}" "${@:2}"      ;date1_iso8601="$now" ;}
-		[[ ! $2 ]] && { 	set -- "$1" "${now}" "${@:3}" ;date2_iso8601="$now" ;}
+		[[ -z $1 || -z $2 ]] && now=$(get_timef)
+		[[ -z $1 ]] && { 	set -- "${now}" "${@:2}"      ;date1_iso8601="$now" ;}
+		[[ -z $2 ]] && { 	set -- "$1" "${now}" "${@:3}" ;date2_iso8601="$now" ;}
 	fi
 
 	#load ISO8601 dates from `date' or user input
 	inputA="${date1_iso8601:-$1}"  inputB="${date2_iso8601:-$2}"
-	if [[ ! $unix2 ]]  #time only input, no `date' pkg available
+	if [[ -z $unix2 ]]  #time only input, no `date' pkg available
 	then 	[[ $inputA = *([0-9]):* ]] && inputA="${EPOCH:0:10}T${inputA}"
 		[[ $inputB = *([0-9]):* ]] && inputB="${EPOCH:0:10}T${inputB}"
 	fi
@@ -760,7 +760,7 @@ function mainf
 	#
 	#environment $TZ
 	[[ ${TZ##*$GLOBUTC} = +?* ]] && TZ_neg=+1 TZ_pos=-1 || TZ_neg=-1 TZ_pos=+1
-	[[ $TZh$TZm$TZs = *([0-9+-]) && ! $unix2 ]] || unset TZh TZm TZs
+	[[ $TZh$TZm$TZs = *([0-9+-]) && -z $unix2 ]] || unset TZh TZm TZs
 
 	#24h clock and input leap second support (these $tz* parameters will be zeroed later)
 	((hourA==24)) && (( (neg_tzA>0 ? (tzAh-=hourA-23) : (tzAh+=hourA-23) ) , (hourA-=hourA-23) ))
@@ -797,8 +797,8 @@ function mainf
 
 		#environment $TZ support  #only for printing
 		if ((!OPTVERBOSE)) && ((TZh||TZm||TZs))
-		then 	[[ ! $tzA ]] && ((tzAh-=(TZh*TZ_neg), tzAm-=(TZm*TZ_neg), tzAs-=(TZs*TZ_neg) ))
-			[[ ! $tzB ]] && ((tzBh-=(TZh*TZ_neg), tzBm-=(TZm*TZ_neg), tzBs-=(TZs*TZ_neg) ))
+		then 	[[ -z $tzA ]] && ((tzAh-=(TZh*TZ_neg), tzAm-=(TZm*TZ_neg), tzAs-=(TZs*TZ_neg) ))
+			[[ -z $tzB ]] && ((tzBh-=(TZh*TZ_neg), tzBm-=(TZm*TZ_neg), tzBs-=(TZs*TZ_neg) ))
 		else 	unset TZh TZm TZs
 		fi
 
@@ -860,19 +860,19 @@ function mainf
 		#modulus as (a%b + b)%b to avoid negative remainder.
 		#<https://www.geeksforgeeks.org/modulus-on-negative-numbers/>
 
-		if [[ $yearAtz ]]
+		if [[ -n $yearAtz ]]
 		then 	(( 	yearA=yearAtz , monthA=monthAtz , dayA=dayAtz,
 				hourA=hourAtz , minA=minAtz , secA=secAtz ,
 				tzAh=0 , tzAm=0 , tzAs=0
 			))
 		fi
-		if [[ $yearBtz ]]
+		if [[ -n $yearBtz ]]
 		then 	(( 	yearB=yearBtz , monthB=monthBtz , dayB=dayBtz,
 				hourB=hourBtz , minB=minBtz , secB=secBtz ,
 				tzBh=0 , tzBm=0 , tzBs=0
 			))
 		fi
-	elif [[ ! $unix2$OPTVERBOSE && $tzA$tzB$TZ = *+([A-Za-z_])* ]]
+	elif [[ -z $unix2$OPTVERBOSE && $tzA$tzB$TZ = *+([A-Za-z_])* ]]
 	then 	#echo "warning: input DATE or \$TZ contains timezone ID or name. Support requires package \`date'" >&2
 		unset tzA tzB  tzAh tzBh tzAm  tzBm tzAs tzBs  TZh TZm TZs
 	else 	unset tzA tzB  tzAh tzBh tzAm  tzBm tzAs tzBs  TZh TZm TZs
@@ -880,7 +880,7 @@ function mainf
 
 
 	#sort `UTC' dates (if no `date' package)
-	if [[ ! $unix2 ]] && ((
+	if [[ -z $unix2 ]] && ((
 		(yearA>yearB)
 		|| ( (yearA==yearB) && (monthA>monthB) )
 		|| ( (yearA==yearB) && (monthA==monthB) && (dayA>dayB) )
@@ -1053,11 +1053,11 @@ function mainf
 
 	#generate unix times arithmetically?
 	((GETUNIX)) && { 	echo ${neg_range%1}${range} ;unset GETUNIX ;return ${ret:-0} ;}
-	if [[ ! $unix2 ]]
+	if [[ -z $unix2 ]]
 	then 	if ((
 			(yearA>1970 ? yearA-1970 : 1970-yearA)
 			> (yearB>1970 ? yearB-1970 : 1970-yearB)
-		)) || [[ $UNIX2 ]]
+		)) || [[ -n $UNIX2 ]]
 		then 	var=${UNIX2:-$yearB-$monthB-${dayB}T$hourB:$minB:$secB}  varname=B #utc times
 		else 	var=${UNIX1:-$yearA-$monthA-${dayA}T$hourA:$minA:$secA}  varname=A
 		fi
@@ -1167,12 +1167,12 @@ function mainf
 	
 	#print results
 	if ((!OPTVERBOSE))
-	then 	if [[ ! $date1_iso8601_pr$date1_iso8601 ]] 
+	then 	if [[ -z $date1_iso8601_pr$date1_iso8601 ]] 
 		then 	date1_iso8601=$(unix_toiso "$unix1" \
 				"$neg_tzA" "$tzAh" "$tzAm" "$tzAs" \
 				"$TZ_neg"  "$TZh"  "$TZm"  "$TZs")
 		fi
-		if [[ ! $date2_iso8601_pr$date2_iso8601 ]] 
+		if [[ -z $date2_iso8601_pr$date2_iso8601 ]] 
 		then 	date2_iso8601=$(unix_toiso "$unix2" \
 				"$neg_tzB" "$tzBh" "$tzBm" "$tzBs" \
 				"$TZ_neg"  "$TZh"  "$TZm"  "$TZs")
@@ -1201,7 +1201,7 @@ function debugf
 		unset unix2t unix1t buf d_cmd ranget utc2t utc1t rfc2t rfc1t ddout y_dd mo_dd w_dd d_dd h_dd m_dd s_dd dd brk ret
 		d_cmd="$DATE_CMD" DATE_CMD="${DATE_CMD_DEBUG:-date}"
 
-		[[ $d_cmd = [Ff][Aa][Ll][Ss][Ee] ]] && [[ ! $TZ ]] && TZ=UTC+0
+		[[ $d_cmd = [Ff][Aa][Ll][Ss][Ee] ]] && [[ -z $TZ ]] && TZ=UTC+0
 		if ((TZs)) || [[ $TZ = *:*:*:* ]] || [[ $tzA = *:*:*:* ]] || [[ $tzB = *:*:*:* ]]
 		then 	echo "warning: \`datediff' and \`date' may not take offsets with seconds" >&2
 			((ret+=230))
@@ -1336,7 +1336,7 @@ fi >/dev/null 2>&1
 if ((!($# +OPTFF) )) && [[ ! -t 0 ]]
 then
 	globtest="*([$IFS])@($GLOBDATE?(+([$SEP])$GLOBTIME)|$GLOBTIME)*([$IFS])@($GLOBDATE?(+([$SEP])$GLOBTIME)|$GLOBTIME)?(+([$IFS])$GLOBOPT)*([$IFS])"  #glob for two ISO8601 dates and possibly pos arg option for single unit range
-	while IFS= read -r || [[ $REPLY ]]
+	while IFS= read -r || [[ -n $REPLY ]]
 	do 	ar=($REPLY) ;((${#ar[@]})) || continue
 		if ((!$#))
 		then 	set -- "$REPLY" ;((OPTL)) && break
@@ -1352,7 +1352,7 @@ then
 	done ;unset ar globtest REPLY
 	[[ ${1//[$IFS]} = $GLOBOPT ]] && opt="$1" && shift
 fi
-[[ $opt ]] && set -- "$@" "$opt"
+[[ -n $opt ]] && set -- "$@" "$opt"
 
 #set single time unit
 opt="${opt:-${@: -1}}" opt="${opt//[$IFS]}"
@@ -1407,7 +1407,7 @@ if ((OPTL+OPTE+OPTM))
 then 	if [[ $1 != ${1:++([0-9])?([\ ${SEP}]?([01])[0-9]?([\ ${SEP}]?([0-3])[0-9]))} ]] #YYYY[-MM[-DD]]
 	then 	var='+%Y' ;((OPTM)) && var='-I'
 		var=$(TZ=UTC datefun "$1" $var) && set -- "$var" "${@:2}"
-	elif [[ ! $1 ]]
+	elif [[ -z $1 ]]
 	then 	var='%Y'  ;((OPTM)) && var='%Y-%m-%d'
 		if var=$(TZ=UTC get_timef '' $var)
 		then 	set -- $var

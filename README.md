@@ -1,27 +1,30 @@
 # shellDatediff
-Calculate time differences with Ksh, Bash and Zsh
+Calculate time differences with Ksh, Bash and Zsh builtins.
 
 Small shell library to calculate elapsed time between two dates in
 various time units.
 
-It uses shell built-ins to deliver results in different units of
-time separately or taking account of each other. It may warp `date`
-package to process input date strings, otherwise input must be
-ISO-8601 or UNIX times.
+All shell built-ins deliver results in different units taking
+into account all time units, or as a fractional single time unit.
+
+It warps `date` package to process input date strings, otherwise input
+must be ISO-8601 or UNIX times to have full functionality.
+
+![Showing off Chat Completions](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
 
 Extensively tested, see [testing scripts](tests/) and [notes](tests/d-test.sh#L78-L186).
 
 
 ## Features
 
-- Accepts standard ISO-8601 dates and UNIX times
-- Aware of date string offset, heeds environment $TZ
-- Warps `date` package to process input date strings more easily (specially `GNU date`)
-- Retrieve day in the week for a given date
-- Check if year is leap
-- Check moon phases
-- Calculate Easter, Carnaval and Corpus Christi dates
-- Check for next Friday 13th (or any combination of weekday + month day)
+- Defaults to standard ISO-8601 date input, or UNIX times
+- Date offset aware, heeds environment $TZ
+- Warps `date` package to process input dates
+- Retrieve day in the week for a given date with `option -R`
+- Check whether year is leap
+- Check moon / lunar phases
+- Check Easter, Carnaval, and Corpus Christi dates
+- Check for next Friday 13th date
 
 
 ## Usage Examples
@@ -71,6 +74,11 @@ not leap year -- 2023
 - Ksh93, Bash or Zsh
 - GNU/BSD/AST/busybox date (optional)
 - Bc (optional)
+
+
+## Help
+
+Please, check script help page with `datediff.sh -h`.
 
 
 ## See Also

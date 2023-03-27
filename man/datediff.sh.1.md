@@ -1,0 +1,282 @@
+% DATEDIFF.SH(1) v0.23.5 | General Commands Manual
+% Jamil Soni N
+% March 2023
+
+
+### NAME
+
+|    **datediff.sh** - Calculate time ranges/intervals between dates
+
+
+### SYNOPSIS
+
+|    **datediff.sh** \[**-Rrttuvvv**] \[`-`_NUM_] \[`-f`_\"FMT\"_] _DATE1_ _DATE2_ \[_UNIT_]
+|    **datediff.sh** **-FF** \[**-vv**] \[\[_DAY_IN_WEEK_] \[_DAY_IN_MONTH_]] \[_START_DATE_]
+|    **datediff.sh** **-eel** \[**-v**] _YEAR_..
+|    **datediff.sh** **-m** \[**-v**] _DATE_..
+|    **datediff.sh** **-h**
+
+
+### DESCRIPTION
+
+Calculate **time interval** (elapsed) between _DATE1_ and _DATE2_ in various
+time units. The `C-code date` programme is optionally run to process dates.
+
+Other functions include checking if _YEAR_ is **leap**, **Easter date** on
+a given _YEAR_ and **phase of the moon** at _DATE_.
+
+In the main function, `GNU date` accepts mostly free format human
+readable date strings. If using `FreeBSD date`, input _DATE_ strings
+must be **ISO-8601** (_YYYY-MM-DDThh:mm:ss_), unless option `-f` _FMT_ is
+set to a new input time format. If `date` programme is not available
+then input must be formatted as **ISO-8601** or **UNIX time**.
+
+If _DATE_ is not set, defaults to _now_. To flag _DATE_ as **UNIX time**,
+prepend an at sign _\@_ to it or set `option -r`. Stdin input supports 
+one _DATE_ string per line (max two lines) or two ISO-8601
+_DATES_ separated by space in a single line. Input is processed in
+a best effort basis.
+
+Output **"RANGES"** section displays intervals in **different units of time**
+(years or months or weeks or days or hours or minutes or
+seconds alone). It also displays a **compound time range** with all
+the above units into consideration to each other.
+
+Single _UNIT_ time periods can be displayed in **table format** `-t` and
+their **scale** set with `-NUM` where _NUM_ is an integer. Result least
+significant digit is subject to rounding. When last positional
+parameter _UNIT_ is exactly one of _Y_, _MO_, _W_, _D_, _H_,
+_M_ or _S_, only a single _UNIT_ interval is printed.
+
+Output **"DATES"** section prints two dates in **ISO-8601 format** or, if
+option `-R` is set, **RFC-5322 format**.
+
+Option `-e` prints **Easter date** for given _YEARS_ (for western churches)
+and option -ee also prints **Carnaval** and **Corpus Christi dates**.
+
+Option `-u` sets or prints dates in **Coordinated Universal Time (UTC)**
+in the main function.
+
+Option `-l` checks if _YEAR_ **is leap**. Set option `-v` to **decrease verbose**.
+ISO-8601 system assumes proleptic Gregorian calendar, year
+zero and no leap seconds.
+
+Option `-m` prints **lunar phase** at _DATE_ as _YYYY[-MM[-DD]]_, auto
+expansion takes place on partial _DATE input_. _DATE_ ought to be **UTC time**.
+Code snippet adapted from _NetHack_.
+
+Option `-F` prints the date of next **Friday the 13th**, _START_DATE_ must
+be formated as _YYY[-MM[-DD]]_. Set twice to prints the following
+10 matches. Optionally, set day in the week, such as Sunday, and
+day number in month as first and second positional parameters.
+
+**DATE offsets** as per ISO-8601 are supported throughout this script. When
+environment _\$TZ_ is a positive or negative decimal number, such
+as _UTC+3_, it is read as offset. Variable _\$TZ_ with timezone name
+or ID (e.g. **America/Sao_Paulo**) is supported by **C-code date**.
+
+This script uses `Bash`/`Ksh` arithmetics to perform most time range
+calculations, as long as input is a valid ISO-8601 date format.
+
+Option `-d` sets _TZ=UTC_, unsets verbose switches and run checks
+against `C-code datediff` and `C-code date`. Set once to dump only when
+results differ and set twice to code exit only.
+
+Option `-D` disables **C-code date** warping and `-DD` disables `Bash`/`Ksh`
+`printf %()T` warping, too.
+
+The **project source** is hosted at
+
+    <https://github.com/mountaineerbr/shellDatediff>.
+
+
+### OPTIONS
+
+**Extra Functions**
+
+**-e**
+:    Print Western Easter date.
+
+**-ee**
+
+:    Print Carnaval, Easter and Corpus Christi dates.
+
+
+**-FF**
+
+:    Print following Friday the 13th date.
+
+**-h**
+
+:    Print this help page.
+
+**-l**
+
+:    Check if YEAR is leap year.
+
+**-m**
+
+:    Print lunar phase at DATE (ISO UTC time).
+
+**Main Function**
+
+**-[**_0-9_**]**
+
+:    Set scale for single unit intervals.
+
+**-DDdd**
+
+:    Debug, check help page.
+
+**-f** _FMT_
+
+:    Input time format string (only with BSD `date`).
+
+**-R**
+
+:    Print human time in RFC-5322 format (verbose).
+
+
+**-r**, **-\@**
+
+:    Input DATES are UNIX times.
+
+
+**-tt**
+
+:    Table layout display of single unit intervals.
+
+**-u**
+
+:    Set or print UTC time instead of local time.
+
+
+**-vvv**
+
+:    Verbose level, change print layout of functions.
+
+
+### EXAMPLES
+
+**Leap year check**
+
+|    datediff.sh `-l` 2000
+|    datediff.sh `-l` {1980..2000}
+|    echo 2000 | datediff.sh `-l`
+
+
+**Moon phases for January 1996**
+
+|    datediff.sh `-m` 1996-01
+
+**Print following Friday, 13th**
+
+|    datediff.sh `-F`
+
+**Print following Sunday, 12th after 1999**
+
+|    datediff.sh `-F` sun 12 1999
+
+**Single unit time periods**
+
+|    datediff.sh 2022-03-01T00:00:00 2022-03-01T10:10:10 _m_
+|    datediff.sh \'10 years ago\'  _mo_
+|    datediff.sh 1970-01-01  2000-02-02  _y_
+
+**Time ranges/intervals**
+
+|    datediff.sh 2020-01-03T14:30:10 2020-12-24T00:00:00
+|    datediff.sh 0921-04-12 1999-01-31
+|    echo 1970-01-01 2000-02-02 | datediff.sh 
+|    _TZ=UTC+3_ datediff.sh  2020-01-03T14:30:10-06  2021-12-30T21:00:10-03:20
+
+**GNU date warping**
+
+|    datediff.sh \'next monday\'
+|    datediff.sh 2019/6/28  1Aug
+|    datediff.sh \'5min 34seconds\'
+|    datediff.sh 1aug1990-9month now
+|    datediff.sh \-- -2week-3day
+|    datediff.sh \-- \"today + 1day\" *\@*1952292365
+|    datediff.sh `-`_2_ \-- \'1hour ago 30min ago\'
+|    datediff.sh  today00:00  \'12 May 2020 14:50:50\'
+|    datediff.sh \'2020-01-01 - 6months\' 2020-01-01
+|    datediff.sh \'05 jan 2005' \'now - 43years -13 days\'
+|    datediff.sh `-u` 2023-01-14T11:20:00Z \'2023-01-14T11:20:00Z + 5 hours\'
+|    datediff.sh *\@*1561243015 *\@*1592865415
+
+**BSD date warping**
+
+|    datediff.sh `-f`\'%m/%d/%Y\' 6/28/2019  9/04/1970 
+|    datediff.sh `-r` 1561243015 1592865415
+|    datediff.sh  200002280910.33  0003290010.00
+|    datediff.sh \-- \'-v +2d\' \'-v -3w\'
+
+
+### REFINEMENT RULES
+
+Some date intervals can be calculated in more than one way depending
+on the logic used in the `compound time range` display. We
+decided to mimic _Hroptatyr_'s `datediff` refinement rules as often
+as possible.
+
+Script error rate of the core code is estimated to be lower than
+one percent after extensive testing with selected and corner-case
+sample dates and times. Check script source code for details.
+
+
+
+### ENVIRONMENT
+
+**CFACTOR**
+
+:    Correction factor used in the lunar phase function. Defaults=-1892.
+
+**DATE_CMD**
+
+:    Path to `C-code date` programme. **GNU**, **BSD**, **AST** and **Busybox** `date` are supported.
+
+**TZ**
+
+:    Offset time. POSIX time zone definition by the $TZ variable takes a different form from ISO-8601 standards, so that ISO UTC-03 is equivalent to setting $TZ=UTC+03. Only the `C-code date` programme can parse timezone names and IDS.
+
+
+
+### WARRANTY
+
+Licensed under the **GNU General Public License 3** or better. This
+software is distributed without support or bug corrections. Many
+thanks for all whose advice improved this script from **c.u.shell**.
+
+`Bash2.05b+`, `Ksh93` or `Zsh` is required. `Bc` or `Ksh93` is required
+for single-unit calculations. **FreeBSD12+** or **GNU** `date` is
+optionally required.
+
+
+### SEE ALSO
+
+- `Datediff` from `dateutils`, by _Hroptatyr_
+ <www.fresse.org/dateutils/>
+- `PDD` from _Jarun_
+ <github.com/jarun/pdd>
+- `AST date` elapsed time `-E`
+ <github.com/att/ast>
+- `Units` from GNU.
+ <https://www.gnu.org/software/units/>
+- Do calendrical savants use calculation to answer date questions?
+ A functional magnetic resonance imaging study, _Cowan and Frith_, 2009.
+ <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2677581/#!po=21.1864>
+- Calendrical calculation, _Dershowitz and Reingold_, 1990
+ <http://www.cs.tau.ac.il/~nachum/papers/cc-paper.pdf>
+ <https://books.google.com.br/books?id=DPbx0-qgXu0C>
+- How many days are in a year? _Manning_, 1997.
+ <https://pumas.nasa.gov/files/04_21_97_1.pdf>
+- Iana Time zone database
+ <https://www.iana.org/time-zones>
+- Fun with Date Arithmetic (see replies)
+ <https://linuxcommando.blogspot.com/2009/11/fun-with-date-arithmetic.html>
+
+| Tip: Division is but subtractions and multiplication but additions.
+| --Lost reference
+
+

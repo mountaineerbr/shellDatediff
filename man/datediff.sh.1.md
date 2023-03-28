@@ -85,9 +85,10 @@ results differ and set twice to code exit only.
 Option `-D` disables **C-code date** warping and `-DD` disables `Bash`/`Ksh`
 `printf %()T` warping, too.
 
-The **project source** is hosted at
+The **project source** is hosted at:
 
-    <https://github.com/mountaineerbr/shellDatediff>.
+	<https://github.com/mountaineerbr/shellDatediff>
+	<https://gitlab.com/fenixdragao/shelldatediff>
 
 
 ### OPTIONS

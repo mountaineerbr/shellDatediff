@@ -231,15 +231,21 @@ sample dates and times. Check script source code for details.
 
 **CFACTOR**
 
-:    Correction factor used in the lunar phase function. Defaults=-1892.
+:    Correction factor used in the lunar phase function.
+     
+     Defaults=-1892.
+
 
 **DATE_CMD**
 
 :    Path to `C-code date` programme. **GNU**, **BSD**, **AST** and **Busybox** `date` are supported.
 
+
 **TZ**
 
-:    Offset time. POSIX time zone definition by the $TZ variable takes a different form from ISO-8601 standards, so that ISO UTC-03 is equivalent to setting $TZ=UTC+03. Only the `C-code date` programme can parse timezone names and IDS.
+:    Offset time. POSIX time zone definition by the $TZ variable takes a different form from ISO-8601 standards, so that ISO UTC-03 is equivalent to setting $TZ=UTC+03.
+
+     Only the `C-code date` programme can parse timezone names and IDS.
 
 
 
@@ -280,4 +286,6 @@ optionally required.
 | Tip: Division is but subtractions and multiplication but additions.
 | --Lost reference
 
-
+<!-- Generate the man page:
+    pandoc --standalone --to man ~/bin/ddate/datediff.sh.1.md -o ./datediff.sh.1
+-->

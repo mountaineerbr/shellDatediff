@@ -13,7 +13,7 @@ The script warps `GNU`/`BSD` `C-code date` programme to process input
 date strings in various formats (main function), otherwise
 input must be *ISO-8601* or *UNIX* times.
 
-Extensively tested, see [testing scripts](tests/) and [notes](tests/d-test.sh#L78-L186).
+Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L186), and [man page](man/README.md).
 
 
 ## ✨ Features

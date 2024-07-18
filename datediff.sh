@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.23.5  mar/2023  mountaineerbr  GPLv3+
+# v0.23.6  jul/2024  mountaineerbr  GPLv3+
 [[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -19,10 +19,7 @@ SYNOPSIS
 DESCRIPTION
 	Calculate time interval (elapsed) between DATE1 and DATE2 in var-
 	ious time units. The \`C-code date' programme is optionally run
-	to process dates.
-
-	Other functions include checking if YEAR is leap, Easter date on
-	a given YEAR and phase of the moon at DATE.
+	to process input dates to the ISO-8601 format.
 
 	In the main function, \`GNU date' accepts mostly free format human
 	readable date strings. If using \`FreeBSD date', input DATE strings
@@ -50,7 +47,11 @@ DESCRIPTION
 	Output DATES section prints two dates in ISO-8601 format or, if
 	option -R is set, RFC-5322 format.
 
-	Option -e prints Easter date for given YEARs (for western churches)
+	Extra functions include checking if YEAR is leap, Easter, Carnaval,
+	and Corpus Christi dates on a given YEAR, and phase of the
+	moon at DATE.
+
+	Option -e prints Easter date for given YEARs (for Western Churches)
 	and option -ee also prints Carnaval and Corpus Christi dates.
 
 	Option -u sets or prints dates in Coordinated Universal Time (UTC)
@@ -65,7 +66,7 @@ DESCRIPTION
 	time. Code snippet adapted from NetHack.
 
 	Option -F prints the date of next Friday the 13th, START_DATE must
-	be formated as \`YYY[-MM[-DD]]'. Set twice to prints the following
+	be formated as \`YYYY[-MM[-DD]]'. Set twice to prints the following
 	10 matches. Optionally, set day in the week, such as Sunday, and
 	day number in month as first and second positional parameters.
 
@@ -79,20 +80,20 @@ DESCRIPTION
 
 	Option -d sets TZ=UTC, unsets verbose switches and run checks
 	against \`C-code datediff' and \`C-code date'. Set once to dump
-	only when results differ and set twice to code exit only.
+	only when results differ and set twice to code exit only (debug).
 
 	Option -D disables \`C-code date' warping and -DD disables Bash/
-	Ksh \`printf %()T' warping, too.
+	Ksh \`printf %()T' warping, too (debug).
 
 	Project source is hosted at:
 
-	<https://github.com/mountaineerbr/shellDatediff>
 	<https://gitlab.com/fenixdragao/shelldatediff>
+	<https://github.com/mountaineerbr/shellDatediff>
 
 
 ENVIRONMENT
  	CFACTOR 	Correction factor used in the lunar phase func-
-			tion. Defaults=-1892.
+			tion. Defaults=\"-1892\"
 
 	DATE_CMD 	Path to \`C-code date' programme. GNU, BSD, AST
 			and Busybox \`date' are supported.
@@ -122,7 +123,7 @@ SEE ALSO
 	\`PDD' from Jarun
 	<github.com/jarun/pdd>
 
-	\`AST date' elapsed time -E
+	\`AST date' elapsed time option -E
 	<github.com/att/ast>
 
 	\`Units' from GNU.
@@ -268,11 +269,11 @@ TIME_ISO8601_FMT='%Y-%m-%dT%H:%M:%S%z'
 TIME_RFC5322_FMT='%a, %d %b %Y %H:%M:%S %z'
 TIME_ISO8601_FMT_PF='%04d-%02d-%02dT%02d:%02d:%02d%.1s%02d:%02d:%02d'
 TIME_RFC5322_FMT_PF='%.3s, %02d %.3s %04d %02d:%02d:%02d %.1s%02d:%02d:%02d'
-CFACTOR="${CFACTOR:=-1892}"  #moon phase correction factor
+CFACTOR="${CFACTOR-1892}"  #moon phase correction factor
 
 
 # Choose between GNU/BSD/AST/BUSYBOX date
-# datefun.sh [-u|-R|-v[val]|-I[fmt]] [YYY-MM-DD|@UNIX] [+OUTPUT_FORMAT]
+# datefun.sh [-u|-R|-v[val]|-I[fmt]] [YYYY-MM-DD|@UNIX] [+OUTPUT_FORMAT]
 # By defaults, input should be ISO8601 date or UNIX time (append @).
 # Option -I `fmt' may be `date', `hours', `minutes' or `seconds' (added in FreeBSD12).
 # Setting environment TZ=UTC is equivalent to -u. Accepts only one opt (such as -uIseconds).
@@ -492,7 +493,7 @@ function phase_of_the_moon 		#0-7, with 0: new, 4: full
 		6) 	set -- 'Last Quarter'    ;; # ~.75
 		7) 	set -- 'Waning Crescent' ;;
 	esac
-	#Bash's integer division truncates towards zero, as in C.
+	#Bash's integer division truncates towards zero as in C
 	[[ $*${OPTM#2} = $PHASE_SKIP ]] && return || PHASE_SKIP="$*"
 	if ((OPTVERBOSE))
 	then 	printf '%s\n' "$*"

@@ -1,7 +1,7 @@
 # shellDatediff
 Calculate time differences with Ksh, Bash and Zsh built-ins.
 
-![Showing off datediff script](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
+![Showing off datediff.sh script](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
 
 The project contains a small shell library to calculate elapsed time
 between two dates in various time units and some extra functions.
@@ -18,14 +18,12 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 
 ## ✨ Features
 
-- Defaults to standard *ISO-8601* date input, or UNIX times
+- Date input as *ISO-8601*, or *UNIX times*. Optionally, warps `C-code date`.
 - Date offset aware, heeds environment `$TZ`
 - Check whether year is leap
 - Check moon / lunar phases
 - Check Easter, Carnaval, and Corpus Christi dates
 - Check for next Friday the 13th
-
-<!-- - The script warps `GNU`/`BSD` `C-code date` programme to optionally process input dates in different formats (main function) -->
 
 
 ## Usage Examples
@@ -60,7 +58,7 @@ Obs: set -FF to get the next 10 dates.
 not leap year -- 2023
 ```
 
-Obs: exit code 1 if not leap year.
+Obs: exit code 1 if year is not leap.
 
 
 ### Generate the *lunar phase calendar* for *February, 20023*
@@ -92,7 +90,7 @@ Obs: set multiple years to get a nice `TSV`-formatted output.
 
 ## Requirements
 
-- `Ksh93`, `Bash` or `Zsh`
+- `Ksh93`, `Bash`, or `Zsh`
 - `GNU`/`BSD`/`AST`/`Busybox` `date` (optional)
 - `Bc` (optional)
 
@@ -111,7 +109,10 @@ Please, check script help page with `datediff.sh -h`.
 - \`\`Calendrical calculation'', *Dershowitz* and *Reingold*, 1990,	<http://www.cs.tau.ac.il/~nachum/papers/cc-paper.pdf>.
 
 
----
+
+<!--
 
 	Please, consider sending me a nickle!
 		=) 	bc1qlxm5dfjl58whg6tvtszg5pfna9mn2cr2nulnjr
+
+        -->

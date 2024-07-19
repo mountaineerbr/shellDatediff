@@ -34,15 +34,15 @@ DESCRIPTION
 	a best effort basis.
 
 	Output RANGES section displays intervals in different units of
-	time (years or months or weeks or days or hours or minutes or
-	seconds alone). It also displays a compound time range with all
-	the above units into consideration to each other.
+	time (years, or months, or weeks, or days, or hours, or minutes,
+	or seconds alone). It also displays a compound time range with
+	all the above units into consideration to each other.
 
 	Single UNIT time periods can be displayed in table format -t and
 	their scale set with -NUM where NUM is an integer. Result least
 	significant digit is subject to rounding. When last positional
 	parameter UNIT is exactly one of \`Y', \`MO', \`W', \`D', \`H',
-	\`M' or \`S', only a single UNIT interval is printed.
+	\`M', or \`S', only a single UNIT interval is printed.
 
 	Output DATES section prints two dates in ISO-8601 format or, if
 	option -R is set, RFC-5322 format.

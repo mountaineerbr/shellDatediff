@@ -100,6 +100,12 @@ Obs: set multiple years to get a nice `TSV`-formatted output.
 Please, check script help page with `datediff.sh -h`.
 
 
+## Project Source
+
+- GitLab <https://gitlab.com/fenixdragao/shelldatediff>
+- GitHub <https://github.com/mountaineerbr/shellDatediff>
+
+
 ## See Also
 
 - C-code `dateutils/datediff`, *Hroptatyr*, <http://www.fresse.org/dateutils/>.

@@ -42,6 +42,8 @@ RANGES
 
 Note that `option -u` sets dates as UTC time. The second date is empty and defaults to *now*.
 
+In this example, `option -u` mainly affects how the `C-code date` programme itself works or is warpped by the script.
+
 
 ### Check when next *Friday the 13th* is
 

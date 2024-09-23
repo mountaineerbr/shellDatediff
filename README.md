@@ -28,17 +28,19 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 
 ## Usage Examples
 
-### Time elapsed from *April 15, 2008* to *now*
+### Time elapsed from *January 15th, 2008* to *now*
 
 ```
-% datediff.sh 2008-01-15
+% datediff.sh -u 2008-01-15
 DATES-
-2008-01-15T00:00:00-02:00       1200362400
-2023-02-10T02:35:50-03:00       1676007350
+2008-01-15T00:00:00+00:00       1200355200
+2024-09-11T16:15:34+00:00       1726071334
 RANGES
-15Y 00M 03W 05D  03h 35m 50s
-15.1 years | 345.8 months | 786.4 weeks | 5505.1 days | 132123.6 hours | 7927415.8 mins | 475644950 secs
+16Y 07M 03W 06D  16h 15m 34s
+16.7 years | 376.6 months | 869.2 weeks | 6084.7 days | 146032.3 hours | 8761935.6 mins | 525716134 secs
 ```
+
+Note that `option -u` sets dates as UTC time. The second date is empty and defaults to *now*.
 
 
 ### Check when next *Friday the 13th* is

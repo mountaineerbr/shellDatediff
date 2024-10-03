@@ -1,6 +1,6 @@
-DATEDIFF.SH(1) v0.23.6 | General Commands Manual
+DATEDIFF.SH(1) v0.24 | General Commands Manual
 Jamil Soni N
-July 2024
+October 2024
 
 NAME
 
@@ -52,7 +52,8 @@ Option -e prints Easter dates for given YEARS (for Western Churches) and
 option -ee additionally prints Carnaval and Corpus Christi dates.
 
 Option -u sets or prints dates in Coordinated Universal Time (UTC) in
-the main function.
+the main function. This affects how the C-code date programme process
+dates.
 
 Option -l checks if a YEAR is leap. Set option -v to decrease verbosity.
 The ISO-8601 system assumes proleptic Gregorian calendar, year zero and

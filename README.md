@@ -42,7 +42,9 @@ RANGES
 
 Note that `option -u` sets dates as UTC time. The second date is empty and defaults to *now*.
 
-In this example, `option -u` mainly affects how the `C-code date` programme itself works or is warped by the script.
+In this example, `option -u` mainly affects how the `C-code date` programme itself works, and the shell printf time builtins.
+
+To execute the script without wrapping `C-code date` programme, set `option -D` or `option -DD`. In this case, mind that input must be ISO-8601 or UNIX times and timezone offset bits do make a difference!
 
 
 ### Check when next *Friday the 13th* is

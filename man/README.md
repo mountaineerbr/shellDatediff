@@ -1,8 +1,8 @@
 ---
 author:
 - Jamil Soni N
-date: July 2024
-title: DATEDIFF.SH(1) v0.23.6 \| General Commands Manual
+date: October 2024
+title: DATEDIFF.SH(1) v0.24 \| General Commands Manual
 ---
 
 # NAME
@@ -61,7 +61,8 @@ Churches) and **option -ee** additionally prints **Carnaval** and
 **Corpus Christi dates**.
 
 **Option -u** sets or prints dates in **Coordinated Universal Time
-(UTC)** in the main function.
+(UTC)** in the main function. This affects how the `C-code date`
+programme process dates.
 
 **Option -l** checks if a *YEAR* **is leap**. Set **option -v** to
 **decrease verbosity**. The ISO-8601 system assumes proleptic Gregorian

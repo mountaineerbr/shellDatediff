@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.23.6  jul/2024  mountaineerbr  GPLv3+
+# v0.24  oct/2024  mountaineerbr  GPLv3+
 [[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -269,7 +269,7 @@ TIME_ISO8601_FMT='%Y-%m-%dT%H:%M:%S%z'
 TIME_RFC5322_FMT='%a, %d %b %Y %H:%M:%S %z'
 TIME_ISO8601_FMT_PF='%04d-%02d-%02dT%02d:%02d:%02d%.1s%02d:%02d:%02d'
 TIME_RFC5322_FMT_PF='%.3s, %02d %.3s %04d %02d:%02d:%02d %.1s%02d:%02d:%02d'
-CFACTOR="${CFACTOR-1892}"  #moon phase correction factor
+CFACTOR="${CFACTOR--1892}"  #moon phase correction factor
 
 
 # Choose between GNU/BSD/AST/BUSYBOX date

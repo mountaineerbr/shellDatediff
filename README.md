@@ -84,6 +84,8 @@ Obs: exit code 1 if year is not leap.
 2023-02-28  First Quarter
 ```
 
+Also try `datediff.sh -m 2024-{02..12}` for multiple months!
+
 
 ### Generate dates for 2023 *Carnaval*, *Easter* (western church) and *Corpus Christi* dates
 

@@ -66,7 +66,7 @@ Obs: set -FF to get the next 10 dates.
 not leap year -- 2023
 ```
 
-Obs: exit code 1 if year is not leap.
+Obs: the exit code is *1* if year _is_ _not_ leap. Set `option -v` to decrease verbose. 
 
 
 ### Generate the *lunar phase calendar* for *February, 20023*

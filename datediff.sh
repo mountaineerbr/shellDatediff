@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.24  oct/2024  mountaineerbr  GPLv3+
+# v0.24.1  oct/2024  mountaineerbr  GPLv3+
 [[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -332,7 +332,7 @@ function datefun
 function is_leapyear
 {
 	typeset year
-	year=${1:-0}
+	((year=10#${1:-0}))
 	((!(year % 4) && (year % 100 || !(year % 400) ) ))
 }
 
@@ -342,7 +342,7 @@ function is_leapyear
 function month_maxday
 {
 	typeset month year
-	month="$1" year="$2"
+	((month=10#${1:-1}, year=10#${2:-0}))
 	if ((month==2)) && is_leapyear $year
 	then 	echo 29
 	else 	echo ${YEAR_MONTH_DAYS[month-1]}
@@ -354,7 +354,7 @@ function month_maxday
 function year_days_adj
 {
 	typeset month year
-	month="$1" year="$2"
+	((month=10#${1:-1}, year=10#${2:-0}))
 	if ((month<=2)) && is_leapyear $year
 	then 	echo 366
 	else 	echo 365
@@ -453,7 +453,7 @@ function monthconv
 function get_day_in_week
 {
 	typeset unix
-	unix=${1:-0}
+	((unix=10#${1:-0}))
 	echo ${DAY_OF_WEEK[( ( (unix+(unix<0?1:0))/(24*60*60))%7 +(unix<0?6:7))%7]}
 }
 
@@ -462,10 +462,13 @@ function get_day_in_week
 function get_day_in_year
 {
 	typeset day month year month_test daysum
-	day="${1#0}" month="${2#0}" year="${3##+(0)}"
+	((day=10#${1:-1}, month=10#${2:-1}, year=10#${3:-0}))
+
 	for ((month_test=1;month_test<month;++month_test))
-	do 	((daysum+=$(month_maxday "$month_test" "$year")))
+	do 	((daysum+=${YEAR_MONTH_DAYS[month_test-1]}))
 	done
+	((month>2)) && is_leapyear $year && ((daysum++))
+
 	echo $((day+daysum))
 }
 
@@ -474,8 +477,7 @@ function get_day_in_year
 function phase_of_the_moon 		#0-7, with 0: new, 4: full
 {
 	typeset day month year diy goldn epact
-	day="${1#0}" month="${2#0}" year="${3##+(0)}"
-	day=${day:-1} month=${month:-1} year=${year:-0}
+	((day=10#${1:-1}, month=10#${2:-1}, year=10#${3:-1970}))
 	((year+=CFACTOR))  #correction factor
 
 	diy=$(get_day_in_year "$day" "$month" "$year")
@@ -494,7 +496,7 @@ function phase_of_the_moon 		#0-7, with 0: new, 4: full
 		7) 	set -- 'Waning Crescent' ;;
 	esac
 	#Bash's integer division truncates towards zero as in C
-	[[ $*${OPTM#2} = $PHASE_SKIP ]] && return || PHASE_SKIP="$*"
+	case "$*" in "$PHASE_SKIP") 	return;; *) 	PHASE_SKIP="$*";; esac;
 	if ((OPTVERBOSE))
 	then 	printf '%s\n' "$*"
 	else 	printf '%04d-%02d-%02d  %s\n' "$((year-CFACTOR))" "$month" "$day" "$*"
@@ -1431,16 +1433,16 @@ then 	((OPTE>1)) && ((!OPTVERBOSE)) && printf '%10s\t%10s\t%10s\n' Carnaval East
 elif ((OPTM))
 then 	for DATE_Y  #fill in months and days
 	do 	if [[ $DATE_Y = +([0-9]) ]]
-		then 	set -- ;OPTM=2 
+		then 	set --
 			for ((M=1;M<=12;++M)) ;do set -- "$@" "${DATE_Y}-$M" ;done
-		else 	set -- "$DATE_Y" ;PHASE_SKIP=
+		else 	set -- "$DATE_Y" #;PHASE_SKIP=
 		fi
 		for DATE_M
 		do 	if [[ $DATE_M = +([0-9])[\ $SEP]+([0-9]) ]]
-			then 	set -- ;OPTM=2 
+			then 	set --
 				DMAX=$(month_maxday "${DATE_M#*[\ $SEP]}" "${DATE_M%[\ $SEP]*}")
 				for ((D=1;D<=DMAX;++D)) ;do set -- "$@" "${DATE_M}-$D" ;done
-			else 	set -- "$DATE_M" ;PHASE_SKIP=
+			else 	set -- "$DATE_M" #;PHASE_SKIP=
 			fi
 			for DATE
 			do 	[[ $DATE = $GLOBDATE ]] || echo 'warning: DATE seems invallid' >&2

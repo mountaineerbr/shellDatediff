@@ -81,10 +81,10 @@ zero and no leap seconds.
 expansion takes place on partial _DATE input_. _DATE_ ought to be **UTC time**.
 Code snippet adapted from _NetHack_.
 
-Option `-F` prints the date of next **Friday the 13th**. The _START_DATE_ must
+**Option -F** prints the date of next **Friday the 13th**. The _START_DATE_ must
 be formated as _YYY[-MM[-DD]]_. Optionally, set _day in the week_, such as
 _Sunday_, and _day number in month_ as first and second positional parameters.
- Set option `-FF` to print the following ten matches. 
+ Set **option -FF** to print the following ten matches. 
 
 
 ### Timezone Offsets
@@ -108,6 +108,7 @@ results differ and set twice to code exit only.
 disables `Bash`/`Ksh` `printf %()T` warping, too.
 
 
+<br/>
 The project source is hosted at:
 
 	<https://gitlab.com/fenixdragao/shelldatediff>

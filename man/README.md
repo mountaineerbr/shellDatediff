@@ -82,10 +82,10 @@ calendar, year zero and no leap seconds.
 auto expansion takes place on partial *DATE input*. *DATE* ought to be
 **UTC time**. Code snippet adapted from *NetHack*.
 
-Option `-F` prints the date of next **Friday the 13th**. The
+**Option -F** prints the date of next **Friday the 13th**. The
 *START_DATE* must be formated as *YYY\[-MM\[-DD\]\]*. Optionally, set
 *day in the week*, such as *Sunday*, and *day number in month* as first
-and second positional parameters. Set option `-FF` to print the
+and second positional parameters. Set **option -FF** to print the
 following ten matches.
 
 ### Timezone Offsets
@@ -108,7 +108,7 @@ results differ and set twice to code exit only.
 **Option -D** disables C-code date warping and **option -DD** disables
 `Bash`/`Ksh` `printf %()T` warping, too.
 
-The project source is hosted at:
+<br/> The project source is hosted at:
 
     <https://gitlab.com/fenixdragao/shelldatediff>
     <https://github.com/mountaineerbr/shellDatediff>

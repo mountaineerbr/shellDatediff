@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.24.1  oct/2024  mountaineerbr  GPLv3+
+# v0.24.2  oct/2024  mountaineerbr  GPLv3+
 [[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -629,7 +629,7 @@ function friday_13th
 	fi ;diw_tgt=${diw_tgt:-1}
 
 	[[ $1 = $glob2 ]] && { 	d_tgt=$1 && shift ;} || d_tgt=13
-	IFS="$IFS$SEP" ;set -- $* ;(($#)) || set -- $(get_timef) ;IFS=$' \t\n'
+	IFS="$IFS$SEP" ;set -- $@ ;(($#)) || set -- $(get_timef) ;IFS=$' \t\n'
 	day="${3#0}"    month="${2#0}"      year="${1##*(0)}"
 	day="${day:-1}" month="${month:-1}" year="${year:-0}"
 	

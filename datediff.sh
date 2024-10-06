@@ -22,8 +22,8 @@ DESCRIPTION
 	to process input dates to the ISO-8601 format.
 
 	Other features include checking if YEAR is leap, printing Easter,
-	Carnaval, and Corpus Christi dates on a given YEAR, and the phase of
-	the moon at DATE.
+	Carnaval, and Corpus Christi dates on a given YEAR, and the phase
+	of the moon at DATE.
 
 
 	Main Function

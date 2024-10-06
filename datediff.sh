@@ -478,7 +478,7 @@ function phase_of_the_moon 		#0-7, with 0: new, 4: full
 {
 	typeset day month year diy goldn epact
 	((day=10#${1:-1}, month=10#${2:-1}, year=10#${3:-1970}))
-	((year+=CFACTOR))  #correction factor
+	((year+=CFACTOR))  #correction factor: -1892
 
 	diy=$(get_day_in_year "$day" "$month" "$year")
 	((goldn = (year % 19) + 1))

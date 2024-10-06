@@ -151,15 +151,19 @@ Defaults=\[dq]\f[I]-1892\f[R]\[dq]
 .TP
 \f[B]DATE_CMD\f[R]
 Path to \f[CR]C-code date\f[R] programme.
-\f[B]GNU\f[R], \f[B]BSD\f[R], \f[B]AST\f[R], and \f[B]Busybox\f[R]
-\f[B]date\f[R] are supported.
+.RS
+.PP
+Forks of \f[B]GNU\f[R], \f[B]BSD\f[R], \f[B]AST\f[R], and
+\f[B]Busybox\f[R] \f[B]date\f[R] are supported.
+.RE
 .TP
 \f[B]TZ\f[R]
 Offset time.
+.RS
+.PP
 POSIX time zone definition by the $TZ variable takes a different form
 from ISO-8601 standards, so that ISO UTC-03 is equivalent to setting
 $TZ=UTC+03.
-.RS
 .PP
 Only the \f[B]C-code date\f[R] programme can parse timezone names and
 IDS.

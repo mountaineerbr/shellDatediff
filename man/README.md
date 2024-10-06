@@ -132,13 +132,17 @@ Correction factor used in the lunar phase function.
 Defaults="*-1892*"
 
 **DATE_CMD**  
-Path to `C-code date` programme. **GNU**, **BSD**, **AST**, and
-**Busybox** **date** are supported.
+Path to `C-code date` programme.
+
+Forks of **GNU**, **BSD**, **AST**, and **Busybox** **date** are
+supported.
 
 **TZ**  
-Offset time. POSIX time zone definition by the \$TZ variable takes a
-different form from ISO-8601 standards, so that ISO UTC-03 is equivalent
-to setting \$TZ=UTC+03.
+Offset time.
+
+POSIX time zone definition by the \$TZ variable takes a different form
+from ISO-8601 standards, so that ISO UTC-03 is equivalent to setting
+\$TZ=UTC+03.
 
 Only the **C-code date** programme can parse timezone names and IDS.
 

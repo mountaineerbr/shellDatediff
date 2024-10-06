@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.24.2  oct/2024  mountaineerbr  GPLv3+
+# v0.24.3  oct/2024  mountaineerbr  GPLv3+
 [[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -21,17 +21,29 @@ DESCRIPTION
 	ious time units. The \`C-code date' programme is optionally run
 	to process input dates to the ISO-8601 format.
 
+	Other features include checking if YEAR is leap, printing Easter,
+	Carnaval, and Corpus Christi dates on a given YEAR, and the phase of
+	the moon at DATE.
+
+
+	Main Function
+
 	In the main function, \`GNU date' accepts mostly free format human
 	readable date strings. If using \`FreeBSD date', input DATE strings
 	must be ISO-8601 (\`YYYY-MM-DDThh:mm:ss'), unless option \`-f FMT' is
 	set to a new input time format. If \`date programme' is not avail-
 	able then input must be formatted as ISO-8601 or UNIX time.
 
-	If DATE is not set, defaults to \`now'. To flag DATE as UNIX time,
-	prepend an at sign \`@' to it or set option -r. Stdin input sup-
-	ports one DATE string per line (max two lines) or two ISO-8601
-	DATES separated by space in a single line. Input is processed in
-	a best effort basis.
+	If DATE is not set, defaults to \`now'. If only one DATE is set,
+	the first one is assumed to be \`now' or \`1970'.
+
+	To flag DATE as UNIX time, prepend an at sign \`@' to it or set
+	option -r. Stdin input supports one DATE string per line (max two
+	lines) or two ISO-8601 DATES separated by space in a single line.
+	Input is processed in a best effort basis.
+
+
+	Main Output
 
 	Output RANGES section displays intervals in different units of
 	time (years, or months, or weeks, or days, or hours, or minutes,
@@ -47,15 +59,14 @@ DESCRIPTION
 	Output DATES section prints two dates in ISO-8601 format or, if
 	option -R is set, RFC-5322 format.
 
-	Extra functions include checking if YEAR is leap, Easter, Carnaval,
-	and Corpus Christi dates on a given YEAR, and phase of the
-	moon at DATE.
+	Option -u sets or prints dates in Coordinated Universal Time (UTC)
+	in the main function. This affects the \`C-code date' programme.
+
+
+	Extra Functions
 
 	Option -e prints Easter date for given YEARs (for Western Churches)
 	and option -ee also prints Carnaval and Corpus Christi dates.
-
-	Option -u sets or prints dates in Coordinated Universal Time (UTC)
-	in the main function.
 
 	Option -l checks if YEAR is leap. Set option -v to decrease ver-
 	bose. ISO-8601 system assumes proleptic Gregorian calendar, year
@@ -70,6 +81,9 @@ DESCRIPTION
 	10 matches. Optionally, set day in the week, such as Sunday, and
 	day number in month as first and second positional parameters.
 
+
+	Timezone Offsets
+
 	DATE offsets as per ISO-8601 are supported throughout this script.
 	When environment \$TZ is a positive or negative decimal number, such
 	as \`UTC+3', it is read as offset. Variable \$TZ with timezone name
@@ -78,12 +92,16 @@ DESCRIPTION
 	This script uses Bash/Ksh arithmetics to perform most time range
 	calculations, as long as input is a valid ISO-8601 date format.
 
+
+	Debug and Direct Execution
+
 	Option -d sets TZ=UTC, unsets verbose switches and run checks
 	against \`C-code datediff' and \`C-code date'. Set once to dump
-	only when results differ and set twice to code exit only (debug).
+	only when results differ and set twice to code exit only.
 
 	Option -D disables \`C-code date' warping and -DD disables Bash/
-	Ksh \`printf %()T' warping, too (debug).
+	Ksh \`printf %()T' warping, too.
+
 
 	Project source is hosted at:
 

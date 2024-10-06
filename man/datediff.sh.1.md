@@ -1,4 +1,4 @@
-% DATEDIFF.SH(1) v0.24 | General Commands Manual
+% DATEDIFF.SH(1) v0.24.3 | General Commands Manual
 % Jamil Soni N
 % October 2024
 
@@ -22,17 +22,30 @@
 Calculate **time interval** (elapsed) between _DATE1_ and _DATE2_ in various
 time units. The `C-code date` programme is optionally run to process dates.
 
+Extra functions include checking if _YEAR_ is **leap**, generating **Easter**,
+**Carnaval**, and **Corpus Christi** **dates** on
+a given _YEAR_ and the **phase of the moon** at _DATE_.
+
+
+### Main Function
+
 In the main function, `GNU date` accepts mostly free format human
 readable date strings. If using `FreeBSD date`, input _DATE_ strings
 must be **ISO-8601** (_YYYY-MM-DDThh:mm:ss_), unless **option -f** _FMT_ is
 set to a new input time format. If `C-code date` programme is not available
 then input must be formatted as **ISO-8601** or **UNIX time**.
 
-If _DATE_ is not set, defaults to _now_. To flag _DATE_ as **UNIX time**,
-prepend an "at" sign "_\@_" to it or set **option -r**. Stdin input supports 
-one _DATE_ string per line (max two lines) or two ISO-8601
-_DATES_ separated by space in a single line.
-Input is processed in a best effort basis.
+If _DATE_ is not set, defaults to _now_. If only one _DATE_ is set, the first
+one is assumed to be _now_ or _1970_.
+
+To flag _DATE_ as **UNIX time**, prepend an "at" sign "_\@_" to it or
+set **option -r**.
+
+Stdin input supports  one _DATE_ string per line (max two lines) or two ISO-8601
+_DATES_ separated by space in a single line. Input is processed in a best effort basis.
+
+
+### Main Output
 
 Output **"RANGES"** section displays intervals in **different units of time**
 (years, or months, or weeks, or days, or hours, or minutes, or seconds alone).
@@ -50,15 +63,14 @@ only a single _UNIT_ interval is printed to stdout.
 Output **"DATES"** section prints two dates in **ISO-8601 format** or, if
 **option -R** is set, **RFC-5322 format**.
 
-Extra functions include checking if _YEAR_ is **leap**, **Easter**,
-**Carnaval**, and **Corpus Christi** **dates** on
-a given _YEAR_ and **phase of the moon** at _DATE_.
+**Option -u** sets or prints dates in **Coordinated Universal Time (UTC)**
+in the main function. This affects how the `C-code date` programme process dates.
+
+
+### Extra Functions
 
 **Option -e** prints **Easter dates** for given _YEARS_ (for Western Churches)
 and **option -ee** additionally prints **Carnaval** and **Corpus Christi dates**.
-
-**Option -u** sets or prints dates in **Coordinated Universal Time (UTC)**
-in the main function. This affects how the `C-code date` programme process dates.
 
 **Option -l** checks if a _YEAR_ **is leap**. Set **option -v**
 to **decrease verbosity**.
@@ -74,6 +86,9 @@ be formated as _YYY[-MM[-DD]]_. Optionally, set _day in the week_, such as
 _Sunday_, and _day number in month_ as first and second positional parameters.
  Set option `-FF` to print the following ten matches. 
 
+
+### Timezone Offsets
+
 **DATE offsets** as per ISO-8601 are supported throughout this script. When
 environment _\$TZ_ is a positive or negative decimal number, such
 as _UTC+3_, it is read as offset. Variable _\$TZ_ with timezone name
@@ -82,12 +97,16 @@ or ID (e.g. **America/Sao_Paulo**) is supported by **C-code date** warping only.
 This script uses `Bash` / `Ksh` arithmetics to perform most time range
 calculations.
 
+
+### Debug and Direct Execution
+
 **Option -d** sets _TZ=UTC_, unsets verbose switches and run checks
 against `C-code datediff` and `C-code date`. Set once to dump only when
-results differ and set twice to code exit only (debug).
+results differ and set twice to code exit only.
 
 **Option -D** disables C-code date warping and **option -DD**
-disables `Bash`/`Ksh` `printf %()T` warping, too (debug).
+disables `Bash`/`Ksh` `printf %()T` warping, too.
+
 
 The project source is hosted at:
 
@@ -286,7 +305,8 @@ optionally required.
 
 **-u**
 
-:    Set or print in UTC times instead of local times.
+:    Set or print in UTC times instead of local times. This affects
+     how `C-code date` process input dates.
 
 
 **-v**, **-vv**, **-vvv**

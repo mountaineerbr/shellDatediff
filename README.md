@@ -110,7 +110,7 @@ Set multiple years to get a nice `TSV`-formatted output.
 
 - `Ksh93`, `Bash`, or `Zsh`
 - `GNU`/`BSD`/`AST`/`Busybox` `date` (optional)
-- `Bc` (optional)
+- `Bc` and `Dc` (optional)
 
 
 ## Help

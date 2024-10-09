@@ -2,7 +2,7 @@
 author:
 - Jamil Soni N
 date: October 2024
-title: DATEDIFF.SH(1) v0.24.3 \| General Commands Manual
+title: DATEDIFF.SH(1) v0.24.4 \| General Commands Manual
 ---
 
 # NAME
@@ -21,13 +21,13 @@ title: DATEDIFF.SH(1) v0.24.3 \| General Commands Manual
 
 ## DESCRIPTION
 
-Calculate **time interval** (elapsed) between *DATE1* and *DATE2* in
-various time units. The `C-code date` programme is optionally run to
-process dates.
+Calculate time interval (elapsed) between *DATE1* and *DATE2* in various
+time units. The `C-code date` programme is optionally run to process
+dates.
 
-Extra functions include checking if *YEAR* is **leap**, generating
-**Easter**, **Carnaval**, and **Corpus Christi** **dates** on a given
-*YEAR* and the **phase of the moon** at *DATE*.
+Extra functions include checking if *YEAR* is leap, generating Easter,
+Carnaval, and Corpus Christi dates on a given *YEAR* and the phase of
+the moon at *DATE*.
 
 ### Main Function
 
@@ -40,7 +40,7 @@ available then input must be formatted as **ISO-8601** or **UNIX time**.
 If *DATE* is not set, defaults to *now*. If only one *DATE* is set, the
 first one is assumed to be *now* or *1970*.
 
-To flag *DATE* as **UNIX time**, prepend an “at” sign “*@*” to it or set
+To flag *DATE* as UNIX time, prepend an “at” sign “*@*” to it or set
 **option -r**.
 
 Stdin input supports one *DATE* string per line (max two lines) or two
@@ -49,55 +49,60 @@ in a best effort basis.
 
 ### Main Output
 
-Output **“RANGES”** section displays intervals in **different units of
-time** (years, or months, or weeks, or days, or hours, or minutes, or
-seconds alone). It also displays a **compound time range** with all the
-above units into consideration to each other.
+Output “RANGES” section displays intervals in different units of time
+(years, or months, or weeks, or days, or hours, or minutes, or seconds
+alone). It also displays a compound time range with all the above units
+into consideration to each other.
 
-Single *UNIT* time periods can be displayed in **table format** with
-**option -t** and their **scale** set with command line **option -NUM**
+Single *UNIT* time periods can be displayed in table format with
+**option -t** and their scale set with command line **option -NUM**
 where *NUM* is an integer. The least significant digit of the result is
-subject to rounding. When last positional parameter *UNIT* is exactly
-one of *Y*, *MO*, *W*, *D*, *H*, *M*, or *S*, only a single *UNIT*
-interval is printed to stdout.
+subject to rounding.
 
-Output **“DATES”** section prints two dates in **ISO-8601 format** or,
-if **option -R** is set, **RFC-5322 format**.
+When the last positional parameter *UNIT* is exactly one of *Y*, *MO*,
+*W*, *D*, *H*, *M*, or *S*, only a single *UNIT* time interval is
+printed to stdout.
 
-**Option -u** sets or prints dates in **Coordinated Universal Time
-(UTC)** in the main function. This affects how the `C-code date`
-programme process dates.
+Output “DATES” section prints two dates in **ISO-8601 format** or, if
+**option -R** is set, in the **RFC-5322 format**.
+
+**Option -u** sets or prints dates in Coordinated Universal Time (UTC)
+in the main function. This affects how the `C-code date` programme
+process dates.
+
+Set **options -vvvv** to print different output layouts.
 
 ### Extra Functions
 
-**Option -e** prints **Easter dates** for given *YEARS* (for Western
-Churches) and **option -ee** additionally prints **Carnaval** and
-**Corpus Christi dates**.
+**Option -e** prints Easter dates for given *YEARS* (for Western
+Churches) and **option -ee** additionally prints Carnaval and Corpus
+Christi dates.
 
-**Option -l** checks if a *YEAR* **is leap**. Set **option -v** to
-**decrease verbosity**. The ISO-8601 system assumes proleptic Gregorian
-calendar, year zero and no leap seconds.
+**Option -l** checks if a *YEAR* is leap. Set **option -v** to decrease
+verbosity. The ISO-8601 system assumes proleptic Gregorian calendar,
+year zero and no leap seconds.
 
-**Option -m** prints **lunar phase** at *DATE* as *YYYY\[-MM\[-DD\]\]*,
-auto expansion takes place on partial *DATE input*. *DATE* ought to be
-**UTC time**. Code snippet adapted from *NetHack*.
+**Option -m** prints lunar phase at *DATE* as *YYYY\[-MM\[-DD\]\]*, auto
+expansion takes place on partial *DATE input* (UTC time). Code snippet
+adapted from *NetHack*.
 
-**Option -F** prints the date of next **Friday the 13th**. The
-*START_DATE* must be formated as *YYY\[-MM\[-DD\]\]*. Optionally, set
-*day in the week*, such as *Sunday*, and *day number in month* as first
-and second positional parameters. Set **option -FF** to print the
-following ten matches.
+**Option -F** prints the date of next Friday the 13th. The *START_DATE*
+must be formatted as *YYYY\[-MM\[-DD\]\]*. Optionally, set *day in the
+week*, such as *Sunday*, and *day-number-in-month* as the first and
+second positional parameters. Set **option -FF** to print the following
+ten matches.
 
 ### Timezone Offsets
 
-**DATE offsets** as per ISO-8601 are supported throughout this script.
-When environment *\$TZ* is a positive or negative decimal number, such
-as *UTC+3*, it is read as offset. Variable *\$TZ* with timezone name or
-ID (e.g. **America/Sao_Paulo**) is supported by **C-code date** warping
-only.
+DATE offsets as per ISO-8601 are supported throughout this script. When
+environment *\$TZ* is a positive or negative decimal number, such as
+*UTC+3*, it is read as offset. Variable *\$TZ* with timezone name or ID
+(e.g. America/Sao_Paulo) is supported by `C-code date` warping only.
 
 This script uses `Bash` / `Ksh` arithmetics to perform most time range
-calculations.
+calculations, and relies on `bc` for large-number integers and float
+arithmetics. The programme `dc` is executed in the Easter function as a
+mysterious function taken from *Dershowitz and Reingold*’s paper.
 
 ### Debug and Direct Execution
 
@@ -116,7 +121,7 @@ results differ and set twice to code exit only.
 ## REFINEMENT RULES
 
 Some time intervals can be calculated in more than one way depending on
-the logic used in the `compound time range` display. We decided to mimic
+the logic used in the compound time range display. We decided to mimic
 *Hroptatyr*’s `datediff` refinement rules as often as possible.
 
 Script error rate of the core code is estimated to be lower than one
@@ -150,11 +155,11 @@ Only the **C-code date** programme can parse timezone names and IDS.
 
 Licensed under the **GNU General Public License 3** or better. This
 software is distributed without support or bug corrections. Many thanks
-for all whose advice improved this script from **c.u.shell**.
+for all whose advice improved this script from c.u.shell.
 
 `Bash2.05b+`, `Ksh93` or `Zsh` is required. `Bc` or `Ksh93` is required
-for single-unit calculations. **FreeBSD12+** or **GNU** **date** is
-optionally required.
+for single-unit calculations. `FreeBSD12+` or `GNU` `date` is optionally
+required.
 
 ## SEE ALSO
 
@@ -240,7 +245,7 @@ hours'
 **Extra Functions**
 
 **-e** \[*YEAR*..\]  
-Print Western Easter dates.
+Print Easter dates (Western Church).
 
 **-ee** \[*YEAR*..\]  
 Print Carnaval, Easter and Corpus Christi dates.
@@ -263,7 +268,7 @@ Print lunar phase at DATE (ISO UTC time).
 Set scale for single unit interval results.
 
 **-DD**, **-dd**  
-Debug options, check help page.
+Debug options, check man page and on-line docs.
 
 **-f** \[*FMT*\]  
 Input time string format (only with `BSD date`).
@@ -272,7 +277,7 @@ Input time string format (only with `BSD date`).
 Print human time in RFC-5322 format (verbose).
 
 **-r**, **-@**  
-Input DATES are UNIX times.
+Input DATES are UNIX timestamps.
 
 **-t**, **-tt**  
 Table layouts display of single unit intervals (such as `-vtt`).

@@ -1,4 +1,4 @@
-DATEDIFF.SH(1) v0.24.3 | General Commands Manual
+DATEDIFF.SH(1) v0.24.4 | General Commands Manual
 Jamil Soni N
 October 2024
 
@@ -52,15 +52,19 @@ into consideration to each other.
 Single UNIT time periods can be displayed in table format with option -t
 and their scale set with command line option -NUM where NUM is an
 integer. The least significant digit of the result is subject to
-rounding. When last positional parameter UNIT is exactly one of Y, MO,
-W, D, H, M, or S, only a single UNIT interval is printed to stdout.
+rounding.
+
+When the last positional parameter UNIT is exactly one of Y, MO, W, D,
+H, M, or S, only a single UNIT time interval is printed to stdout.
 
 Output “DATES” section prints two dates in ISO-8601 format or, if option
--R is set, RFC-5322 format.
+-R is set, in the RFC-5322 format.
 
 Option -u sets or prints dates in Coordinated Universal Time (UTC) in
 the main function. This affects how the C-code date programme process
 dates.
+
+Set options -vvvv to print different output layouts.
 
 Extra Functions
 
@@ -72,12 +76,12 @@ The ISO-8601 system assumes proleptic Gregorian calendar, year zero and
 no leap seconds.
 
 Option -m prints lunar phase at DATE as YYYY[-MM[-DD]], auto expansion
-takes place on partial DATE input. DATE ought to be UTC time. Code
-snippet adapted from NetHack.
+takes place on partial DATE input (UTC time). Code snippet adapted from
+NetHack.
 
 Option -F prints the date of next Friday the 13th. The START_DATE must
-be formated as YYY[-MM[-DD]]. Optionally, set day in the week, such as
-Sunday, and day number in month as first and second positional
+be formatted as YYYY[-MM[-DD]]. Optionally, set day in the week, such as
+Sunday, and day-number-in-month as the first and second positional
 parameters. Set option -FF to print the following ten matches.
 
 Timezone Offsets
@@ -88,7 +92,9 @@ it is read as offset. Variable $TZ with timezone name or ID
 (e.g. America/Sao_Paulo) is supported by C-code date warping only.
 
 This script uses Bash / Ksh arithmetics to perform most time range
-calculations.
+calculations, and relies on bc for large-number integers and float
+arithmetics. The programme dc is executed in the Easter function as a
+mysterious function taken from Dershowitz and Reingold’s paper.
 
 Debug and Direct Execution
 
@@ -230,7 +236,7 @@ Extra Functions
 
 -e [YEAR..]
 
-    Print Western Easter dates.
+    Print Easter dates (Western Church).
 
 -ee [YEAR..]
 
@@ -260,7 +266,7 @@ Main Function
 
 -DD, -dd
 
-    Debug options, check help page.
+    Debug options, check man page and on-line docs.
 
 -f [FMT]
 
@@ -272,7 +278,7 @@ Main Function
 
 -r, -@
 
-    Input DATES are UNIX times.
+    Input DATES are UNIX timestamps.
 
 -t, -tt
 

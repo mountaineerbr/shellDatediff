@@ -40,14 +40,20 @@ RANGES
 16.7 years | 376.6 months | 869.2 weeks | 6084.7 days | 146032.3 hours | 8761935.6 mins | 525716134 secs
 ```
 
-Note that `option -u` sets dates as UTC time. The second date is empty and defaults to *now*.
+When only one date is specified, the first date is assumed to be *now* or *1970*.
 
-`Option -u` primarily influences the behavior of the underlying `C-code date` program and the shell's `printf` time builtins.
+Note that `option -u` sets dates as UTC time and it influences how the underlying `C-code date` programme works.
 
-For direct execution without wrapping the `C-code date` programme, use either the `-D` or `-DD` option.
+For direct execution without wrapping the `C-code date` programme, set `options -DD`, and use ISO-8601 format or UNIX timestamps as input.
 
-Note that in these cases, input dates *must* be in ISO-8601 format or UNIX timestamps, and timezone offsets are significant.
+Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the specified timeframe result.
 
+Alternatively, set `options -vvvv` to filter the main output layout for specific fields.
+
+```
+% datediff.sh -vvv tomorrow+8hours+12seconds
+0Y 00M 00W 01D  08h 00m 12s
+```
 
 ### Check when next *Friday the 13th* is
 
@@ -56,7 +62,7 @@ Note that in these cases, input dates *must* be in ISO-8601 format or UNIX times
 Fri, 13 Oct 2023 is  245 days away
 ```
 
-Obs: set -FF to get the next 10 dates.
+Set `options -FF` to get the next 10 dates.
 
 
 ### Check whether year 2023 *is leap*
@@ -66,7 +72,9 @@ Obs: set -FF to get the next 10 dates.
 not leap year -- 2023
 ```
 
-Obs: the exit code is *1* if year _is_ _not_ leap. Set `option -v` to decrease verbose. 
+The exit code is *1* if a year _is_ _not_ leap.
+
+Set `option -v` to decrease verbose. 
 
 
 ### Generate the *lunar phase calendar* for *February, 20023*
@@ -95,7 +103,7 @@ Also try `datediff.sh -m 2024-{02..12}` for multiple months!
 2023-02-21      2023-04-09      2023-06-08
 ```
 
-Obs: set multiple years to get a nice `TSV`-formatted output.
+Set multiple years to get a nice `TSV`-formatted output.
 
 
 ## Requirements
@@ -107,7 +115,8 @@ Obs: set multiple years to get a nice `TSV`-formatted output.
 
 ## Help
 
-Please, check script help page with `datediff.sh -h`.
+Please, check script help page with `datediff.sh -h`
+or the [online man page](man/README.md).
 
 
 ## Project Source

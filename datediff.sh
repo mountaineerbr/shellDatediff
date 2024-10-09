@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.24.3  oct/2024  mountaineerbr  GPLv3+
+# v0.24.4  oct/2024  mountaineerbr  GPLv3+
 [[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -61,6 +61,8 @@ DESCRIPTION
 
 	Option -u sets or prints dates in Coordinated Universal Time (UTC)
 	in the main function. This affects the \`C-code date' programme.
+
+	Options -vvvv filter the main output layout for specific timeframes.
 
 
 	Extra Functions

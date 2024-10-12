@@ -67,7 +67,7 @@ Output "DATES" section prints two dates in **ISO-8601 format** or, if
 **Option -u** sets or prints dates in Coordinated Universal Time (UTC)
 in the main function. This affects how the `C-code date` programme process dates.
 
-Set **options -vvvv** to print different output layouts.
+Set **options -vvv** to print different output layouts.
 
 
 ### Extra Functions

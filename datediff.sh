@@ -62,7 +62,7 @@ DESCRIPTION
 	Option -u sets or prints dates in Coordinated Universal Time (UTC)
 	in the main function. This affects the \`C-code date' programme.
 
-	Options -vvvv filter the main output layout for specific timeframes.
+	Options -vvv filter the main output layout for specific timeframes.
 
 
 	Extra Functions

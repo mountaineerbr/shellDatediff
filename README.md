@@ -48,7 +48,7 @@ For direct execution without wrapping the `C-code date` programme, set `options 
 
 Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the specified timeframe result.
 
-Alternatively, set `options -vvvv` to filter the main output layout for specific fields.
+Alternatively, set `options -vvv` to filter the main output layout for specific fields.
 
 ```
 % datediff.sh -vvv tomorrow+8hours+12seconds

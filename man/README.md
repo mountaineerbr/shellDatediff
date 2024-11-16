@@ -1,8 +1,8 @@
 ---
 author:
 - Jamil Soni N
-date: October 2024
-title: DATEDIFF.SH(1) v0.24.4 \| General Commands Manual
+date: November 2024
+title: DATEDIFF.SH(1) v0.25 \| General Commands Manual
 ---
 
 # NAME
@@ -104,14 +104,21 @@ calculations, and relies on `bc` for large-number integers and float
 arithmetics. The programme `dc` is executed in the Easter function as a
 mysterious function taken from *Dershowitz and Reingold*’s paper.
 
-### Debug and Direct Execution
+### Debug and Test
+
+**Options -d** and **-dd** execute result checks against
+`C-code datediff` and `C-code date` programmes in the main function.
+Requires `datediff.debug.sh`.
 
 **Option -d** sets *TZ=UTC*, unsets verbose switches and run checks
-against `C-code datediff` and `C-code date`. Set once to dump only when
-results differ and set twice to code exit only.
+against `C-code datediff` and `C-code date`. Set once to dump debug
+information only when results differ and set the flag twice to code exit
+only.
 
 **Option -D** disables C-code date warping and **option -DD** disables
-`Bash`/`Ksh` `printf %()T` warping, too.
+`Bash`/`Ksh` `printf %()T` warping, too. This will have the script run
+and process dates with only the shell built-in code instead of trying to
+execute `C-code date` for date processing and format conversion.
 
 <br/> The project source is hosted at:
 
@@ -268,7 +275,7 @@ Print lunar phase at DATE (ISO UTC time).
 Set scale for single unit interval results.
 
 **-DD**, **-dd**  
-Debug options, check man page and on-line docs.
+Debug options, check the Debug Section above.
 
 **-f** \[*FMT*\]  
 Input time string format (only with `BSD date`).

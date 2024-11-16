@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Jamil Soni N" />
-  <title>DATEDIFF.SH(1) v0.24.4 | General Commands Manual</title>
+  <title>DATEDIFF.SH(1) v0.25 | General Commands Manual</title>
   <style>
     html {
       color: #1a1a1a;
@@ -168,15 +168,12 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">DATEDIFF.SH(1) v0.24.4 | General Commands Manual</h1>
+<h1 class="title">DATEDIFF.SH(1) v0.25 | General Commands Manual</h1>
 <p class="author">Jamil Soni N</p>
-<p class="date">October 2024</p>
+<p class="date">November 2024</p>
 </header>
 <h1 id="name">NAME</h1>
 <div class="line-block">   <strong>datediff.sh</strong> - Calculate time
@@ -266,14 +263,21 @@ perform most time range calculations, and relies on <code>bc</code> for
 large-number integers and float arithmetics. The programme
 <code>dc</code> is executed in the Easter function as a mysterious
 function taken from <em>Dershowitz and Reingold</em>’s paper.</p>
-<h3 id="debug-and-direct-execution">Debug and Direct Execution</h3>
+<h3 id="debug-and-test">Debug and Test</h3>
+<p><strong>Options -d</strong> and <strong>-dd</strong> execute result
+checks against <code>C-code datediff</code> and <code>C-code date</code>
+programmes in the main function. Requires
+<code>datediff.debug.sh</code>.</p>
 <p><strong>Option -d</strong> sets <em>TZ=UTC</em>, unsets verbose
 switches and run checks against <code>C-code datediff</code> and
-<code>C-code date</code>. Set once to dump only when results differ and
-set twice to code exit only.</p>
+<code>C-code date</code>. Set once to dump debug information only when
+results differ and set the flag twice to code exit only.</p>
 <p><strong>Option -D</strong> disables C-code date warping and
 <strong>option -DD</strong> disables <code>Bash</code>/<code>Ksh</code>
-<code>printf %()T</code> warping, too.</p>
+<code>printf %()T</code> warping, too. This will have the script run and
+process dates with only the shell built-in code instead of trying to
+execute <code>C-code date</code> for date processing and format
+conversion.</p>
 <p><br/> The project source is hosted at:</p>
 <pre><code>&lt;https://gitlab.com/fenixdragao/shelldatediff&gt;
 &lt;https://github.com/mountaineerbr/shellDatediff&gt;</code></pre>
@@ -433,7 +437,7 @@ multiplication but additions.<br />
 </dd>
 <dt><strong>-DD</strong>, <strong>-dd</strong></dt>
 <dd>
-<p>Debug options, check man page and on-line docs.</p>
+<p>Debug options, check the Debug Section above.</p>
 </dd>
 <dt><strong>-f</strong> [<em>FMT</em>]</dt>
 <dd>

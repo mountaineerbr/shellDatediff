@@ -44,7 +44,8 @@ When only one date is specified, the first date is assumed to be *now* or *1970*
 
 Note that `option -u` sets dates as UTC time and it influences how the underlying `C-code date` programme works.
 
-For direct execution without wrapping the `C-code date` programme, set `options -DD`, and use ISO-8601 format or UNIX timestamps as input.
+To test the shell built-in code for the ISO-8601 and UNIX timestamp processing and conversion
+without wrapping the `C-code date` programme, set `options -DD`.
 
 Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the specified timeframe result.
 

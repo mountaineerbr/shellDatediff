@@ -1,6 +1,6 @@
-% DATEDIFF.SH(1) v0.24.4 | General Commands Manual
+% DATEDIFF.SH(1) v0.25 | General Commands Manual
 % Jamil Soni N
-% October 2024
+% November 2024
 
 
 # NAME
@@ -103,14 +103,20 @@ The programme `dc` is executed in the Easter function as a mysterious function
 taken from _Dershowitz and Reingold_'s paper.
 
 
-### Debug and Direct Execution
+### Debug and Test
 
-**Option -d** sets _TZ=UTC_, unsets verbose switches and run checks
-against `C-code datediff` and `C-code date`. Set once to dump only when
-results differ and set twice to code exit only.
 
-**Option -D** disables C-code date warping and **option -DD**
-disables `Bash`/`Ksh` `printf %()T` warping, too.
+**Options -d** and **-dd** execute result checks against `C-code datediff`
+and `C-code date` programmes in the main function. Requires `datediff.debug.sh`.
+
+**Option -d** sets _TZ=UTC_, unsets verbose switches and run checks against
+`C-code datediff` and `C-code date`. Set once to dump debug information
+only when results differ and set the flag twice to code exit only.
+
+**Option -D** disables C-code date warping and **option -DD** disables
+`Bash`/`Ksh` `printf %()T` warping, too. This will have the script run
+and process dates with only the shell built-in code instead of trying
+to execute `C-code date` for date processing and format conversion.
 
 
 <br/>
@@ -293,7 +299,8 @@ optionally required.
 
 **-DD**, **-dd**
 
-:    Debug options, check man page and on-line docs.
+:    Debug options, check the Debug Section above.
+
 
 **-f**  \[_FMT_]
 

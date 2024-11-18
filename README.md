@@ -24,6 +24,7 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 - Check moon / lunar phases
 - Check Easter, Carnaval, and Corpus Christi dates
 - Check for next Friday the 13th
+- Get input from _stdin_
 
 
 ## Usage Examples
@@ -32,6 +33,7 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 
 ```
 % datediff.sh -u 2008-01-15
+
 DATES-
 2008-01-15T00:00:00+00:00       1200355200
 2024-09-11T16:15:34+00:00       1726071334
@@ -44,22 +46,113 @@ When only one date is specified, the first date is assumed to be *now* or *1970*
 
 Note that `option -u` sets dates as UTC time and it influences how the underlying `C-code date` programme works.
 
-To test the shell built-in code for the ISO-8601 and UNIX timestamp processing and conversion
+To test the shell built-in code for the ISO-8601 and UNIX times tamp processing and conversion
 without wrapping the `C-code date` programme, set `options -DD`.
 
-Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the specified timeframe result.
+Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the specified time frame result.
 
 Alternatively, set `options -vvv` to filter the main output layout for specific fields.
 
 ```
 % datediff.sh -vvv tomorrow+8hours+12seconds
+
 0Y 00M 00W 01D  08h 00m 12s
 ```
+
+
+### Result layout
+
+The main function is very verbose by defaults and
+prints two sections with processed dates (**DATES**) and time range results (**RANGES**).
+
+The user can filter out which fields are going to be calculated and printed.
+
+Set the verbose `option -v` up to four times to select different layouts.
+
+
+Compound time range and all single unit results:
+
+```
+% datediff.sh -v 2008-01-15
+
+16Y 10M 00W 03D  21h 24m 19s
+16.8 years | 378.8 months | 879.0 weeks | 6152.9 days | 147669.4 hours | 8860164.3 mins | 531609859 secs
+```
+
+All single unit results only:
+
+```
+% datediff.sh -vv 2008-01-15
+
+16.8 years | 378.8 months | 879.0 weeks | 6152.9 days | 147669.4 hours | 8860165.2 mins | 531609914 secs
+```
+
+
+Compound time range only:
+
+```
+% datediff.sh -vvv 2008-01-15
+
+16Y 10M 00W 03D  21h 25m 28s
+```
+
+
+`AST date` output style:
+
+```
+% datediff.sh -vvv 2008-01-15
+
+16Y10M00W03D21h25m34s
+```
+
+
+The user can optionally set the last positional parameter as exactly
+`y`, `mo`, `w`, `d`, `m` or `s` to print only a specified single-unit result:
+
+
+```
+% datediff.sh 2008-01-15  y
+
+378.8 months
+```
+
+
+### Decimal plates
+
+The number of decimal plates shown in float results can be set with `options _-num_`,
+where _num_ is an integer. For three decimal plates, the incantation should start as
+`datediff.sh -3`.
+
+The result is subject to rounding for improved precision!
+
+
+### Table layout
+
+There is also a table layout with single-unit results. This is activated with
+`option -t`.
+
+To **print results in the table layout only**, the user
+must set both `options -ttvv` at the command line incantation:
+
+
+```
+% datediff.sh -3 -ttvv 2008-01-15
+
+Years	       16.844
+Months	      378.833
+Weeks	      878.974
+Days	     6152.817
+Hours	   147667.606
+Mins	  8860056.367
+Secs	531603382.000
+```
+
 
 ### Check when next *Friday the 13th* is
 
 ```
 % datediff.sh -F Fri 13
+
 Fri, 13 Oct 2023 is  245 days away
 ```
 
@@ -70,6 +163,7 @@ Set `options -FF` to get the next 10 dates.
 
 ```
 % datediff.sh -l 2023
+
 not leap year -- 2023
 ```
 
@@ -82,6 +176,7 @@ Set `option -v` to decrease verbose.
 
 ```
 % datediff.sh -m 2023-02
+
 2023-02-01  First Quarter
 2023-02-02  Waxing Gibbous
 2023-02-06  Full Moon
@@ -100,6 +195,7 @@ Also try `datediff.sh -m 2024-{02..12}` for multiple months!
 
 ```
 % datediff.sh -ee 2023
+
   Carnaval          Easter      CorpusChristi
 2023-02-21      2023-04-09      2023-06-08
 ```
@@ -130,7 +226,7 @@ or the [online man page](man/README.md).
 
 - C-code `dateutils/datediff`, *Hroptatyr*, <http://www.fresse.org/dateutils/>.
 - Python `PDD`, *Jarun*,	<https://github.com/jarun/pdd>.
-- *AST* `date`, see elapsed time option -E, <https://github.com/att/ast>.
+- *AST* `date`, see elapsed time _option_ _-E_, <https://github.com/att/ast>.
 - *GNU* `units`, <https://www.gnu.org/software/units/>.
 - \`\`Calendrical calculation'', *Dershowitz* and *Reingold*, 1990,	<http://www.cs.tau.ac.il/~nachum/papers/cc-paper.pdf>.
 

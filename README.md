@@ -111,7 +111,7 @@ The user can optionally set the last positional parameter as exactly
 
 
 ```
-% datediff.sh 2008-01-15  y
+% datediff.sh 2008-01-15  mo
 
 378.8 months
 ```
@@ -119,11 +119,11 @@ The user can optionally set the last positional parameter as exactly
 
 ### Decimal plates
 
-The number of decimal plates shown in float results can be set with `options _-num_`,
+The number of decimal plates shown in float results can be set with `options -[num]`,
 where _num_ is an integer. For three decimal plates, the incantation should start as
 `datediff.sh -3`.
 
-The result is subject to rounding for improved precision!
+Result are subject to rounding for improved precision!
 
 
 ### Table layout

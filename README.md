@@ -54,10 +54,14 @@ Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m
 
 Alternatively, set `options -vvv` to filter the main output layout for specific fields.
 
-```
-% datediff.sh -vvv tomorrow+8hours+12seconds
+For example, print the **compound time range** only:
 
-0Y 00M 00W 01D  08h 00m 12s
+
+```
+% datediff.sh -vvv tomorrow+6years+400hours+12seconds                                                                                                10:27
+
+6Y 00M 02W 03D  16h 00m 12s
+
 ```
 
 
@@ -88,7 +92,7 @@ All single unit results only:
 16.8 years | 378.8 months | 879.0 weeks | 6152.9 days | 147669.4 hours | 8860165.2 mins | 531609914 secs
 ```
 
-
+<!--
 Compound time range only:
 
 ```
@@ -96,19 +100,22 @@ Compound time range only:
 
 16Y 10M 00W 03D  21h 25m 28s
 ```
+-->
 
 
-`AST date` output style:
+Compound time range (`AST date` style):
 
 ```
-% datediff.sh -vvv 2008-01-15
+% datediff.sh -vvvv 2008-01-15
 
 16Y10M00W03D21h25m34s
 ```
 
 
+### Single time unit result
+
 The user can optionally set the last positional parameter as exactly
-`y`, `mo`, `w`, `d`, `m` or `s` to print only a specified single-unit result:
+`y`, `mo`, `w`, `d`, `m` or `s` to print only the specific single-unit result:
 
 
 ```

@@ -131,7 +131,7 @@ The number of decimal plates shown in float results can be set with `options -[n
 where _num_ is an integer. For three decimal plates, the incantation should start as
 `datediff.sh -3`.
 
-Result are subject to rounding for improved precision!
+Results are subject to rounding for improved precision!
 
 
 ### Table layout

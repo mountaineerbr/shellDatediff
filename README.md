@@ -199,7 +199,7 @@ Set `option -v` to decrease verbose.
 Also try `datediff.sh -m 2024-{02..12}` for multiple months!
 
 
-### Generate dates for 2023 *Carnaval*, *Easter* (western church) and *Corpus Christi* dates
+### Generate dates for *Carnaval*, *Easter* and *Corpus Christi* dates
 
 ```
 % datediff.sh -ee 2023
@@ -209,6 +209,8 @@ Also try `datediff.sh -m 2024-{02..12}` for multiple months!
 ```
 
 Set multiple years to get a nice `TSV`-formatted output.
+
+The dates are for the Western Church.
 
 
 ## Requirements

@@ -4,7 +4,8 @@ Calculate time differences with Ksh, Bash and Zsh built-ins.
 ![Showing off datediff.sh script](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
 
 The project contains a small shell library to calculate elapsed time
-between two dates in various time units and some extra functions.
+between two dates in various time units and some extra functions for
+day-to-day use.
 
 Results are delivered in different units taking into account all time
 units (*compound time range*), or as a fractional single time unit.

@@ -58,10 +58,9 @@ For example, print the **compound time range** only:
 
 
 ```
-% datediff.sh -vvv tomorrow+6years+400hours+12seconds                                                                                                10:27
+% datediff.sh -vvv tomorrow+6years+400hours+12seconds
 
 6Y 00M 02W 03D  16h 00m 12s
-
 ```
 
 

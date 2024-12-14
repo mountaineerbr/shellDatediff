@@ -290,7 +290,7 @@ Print human time in RFC-5322 format (verbose).
 Input DATES are UNIX timestamps.
 
 **-t**, **-tt**  
-Table layouts display of single unit intervals (such as `-vtt`).
+Table view and layouts of single unit intervals (such as `-vtt`).
 
 **-u**  
 Set or print in UTC times instead of local times. This affects how

@@ -125,7 +125,7 @@ where _num_ is an integer. For three decimal plates, the incantation should star
 Results are subject to rounding for improved precision!
 
 
-### Table layout
+### Table view
 
 There is also a table layout with single-unit results. This is activated with
 `option -t`.

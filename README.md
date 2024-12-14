@@ -135,15 +135,15 @@ must set both `options -ttvv` at the command line incantation:
 
 
 ```
-% datediff.sh -3 -ttv 2008-01-15
+% datediff.sh -3 -tv 2008-01-15
 
-Years	       16.844
-Months	      378.833
-Weeks	      878.974
-Days	     6152.817
-Hours	   147667.606
-Mins	  8860056.367
-Secs	531603382.000
+Years	       16.915
+Months	      379.704
+Weeks	      882.690
+Days	     6178.831
+Hours	   148291.953
+Mins	  8897517.150
+Secs	533851029
 ```
 
 

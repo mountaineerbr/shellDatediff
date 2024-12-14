@@ -1,6 +1,6 @@
 #!/usr/bin/env ksh
 # datediff.sh - Calculate time ranges between dates
-# v0.25.1  dec/2024  mountaineerbr  GPLv3+
+# v0.25.2  dec/2024  mountaineerbr  GPLv3+
 [[ -n $BASH_VERSION ]] && shopt -s extglob  #bash2.05b+/ksh93u+/zsh5+
 [[ -n $ZSH_VERSION  ]] && setopt NO_SH_GLOB KSH_GLOB KSH_ARRAYS SH_WORD_SPLIT GLOB_SUBST
 
@@ -242,7 +242,7 @@ OPTIONS
 	-f FMT 	Input time format string (only with BSD \`date').
 	-R 	Print human time in RFC-5322 format (verbose).
 	-r, -@ 	Input DATES are UNIX times.
-	-tt 	Table layout display of single unit intervals.
+	-tt 	Table display of single unit intervals.
 	-u 	Set or print UTC time instead of local time.
 	-vvv 	Verbose level, change print layout of functions."
 

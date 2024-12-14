@@ -1,4 +1,4 @@
-% DATEDIFF.SH(1) v0.25.1 | General Commands Manual
+% DATEDIFF.SH(1) v0.25.2 | General Commands Manual
 % Jamil Soni N
 % December 2024
 
@@ -321,7 +321,7 @@ optionally required.
 
 **-t**, **-tt**
 
-:    Table view and layouts of single unit intervals (such as `-vtt`).
+:    Table display of single unit intervals (such as `-vtt`).
 
 **-u**
 

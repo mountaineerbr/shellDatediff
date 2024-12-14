@@ -2,7 +2,7 @@
 author:
 - Jamil Soni N
 date: December 2024
-title: DATEDIFF.SH(1) v0.25.1 \| General Commands Manual
+title: DATEDIFF.SH(1) v0.25.2 \| General Commands Manual
 ---
 
 # NAME
@@ -290,7 +290,7 @@ Print human time in RFC-5322 format (verbose).
 Input DATES are UNIX timestamps.
 
 **-t**, **-tt**  
-Table view and layouts of single unit intervals (such as `-vtt`).
+Table display of single unit intervals (such as `-vtt`).
 
 **-u**  
 Set or print in UTC times instead of local times. This affects how

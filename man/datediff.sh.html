@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Jamil Soni N" />
-  <title>DATEDIFF.SH(1) v0.25 | General Commands Manual</title>
+  <title>DATEDIFF.SH(1) v0.25.1 | General Commands Manual</title>
   <style>
     html {
       color: #1a1a1a;
@@ -171,9 +171,9 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">DATEDIFF.SH(1) v0.25 | General Commands Manual</h1>
+<h1 class="title">DATEDIFF.SH(1) v0.25.1 | General Commands Manual</h1>
 <p class="author">Jamil Soni N</p>
-<p class="date">November 2024</p>
+<p class="date">December 2024</p>
 </header>
 <h1 id="name">NAME</h1>
 <div class="line-block">   <strong>datediff.sh</strong> - Calculate time
@@ -234,8 +234,11 @@ format</strong> or, if <strong>option -R</strong> is set, in the
 <p><strong>Option -u</strong> sets or prints dates in Coordinated
 Universal Time (UTC) in the main function. This affects how the
 <code>C-code date</code> programme process dates.</p>
-<p>Set <strong>options -vvv</strong> to print different output
-layouts.</p>
+<p>In the main function, set <strong>options -v</strong> to print only
+the single-unit results and <strong>-vv</strong> to print only the
+compound time range result.</p>
+<p>In other function, set <strong>options -v</strong> to decrease
+verbose.</p>
 <h3 id="extra-functions">Extra Functions</h3>
 <p><strong>Option -e</strong> prints Easter dates for given
 <em>YEARS</em> (for Western Churches) and <strong>option -ee</strong>

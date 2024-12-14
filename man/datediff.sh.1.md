@@ -1,6 +1,6 @@
-% DATEDIFF.SH(1) v0.25 | General Commands Manual
+% DATEDIFF.SH(1) v0.25.1 | General Commands Manual
 % Jamil Soni N
-% November 2024
+% December 2024
 
 
 # NAME
@@ -67,7 +67,10 @@ Output "DATES" section prints two dates in **ISO-8601 format** or, if
 **Option -u** sets or prints dates in Coordinated Universal Time (UTC)
 in the main function. This affects how the `C-code date` programme process dates.
 
-Set **options -vvv** to print different output layouts.
+In the main function, set **options -v** to print only the single-unit results
+and **-vv** to print only the compound time range result.
+
+In other function, set **options -v** to decrease verbose.
 
 
 ### Extra Functions

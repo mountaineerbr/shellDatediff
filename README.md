@@ -54,11 +54,11 @@ Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m
 
 Alternatively, set `options -vvv` to filter the main output layout for specific fields.
 
-For example, print the **compound time range** only:
+For example, print the **compound time range** _only_:
 
 
 ```
-% datediff.sh -vvv tomorrow+6years+400hours+12seconds
+% datediff.sh -vv tomorrow+6years+400hours+12seconds
 
 6Y 00M 02W 03D  16h 00m 12s
 ```
@@ -71,31 +71,23 @@ prints two sections with processed dates (**DATES**) and time range results (**R
 
 The user can filter out which fields are going to be calculated and printed.
 
-Set the verbose `option -v` up to four times to select different layouts.
+Set the verbose `option -v` up to three times to select different layouts in
+the main function. Setting `-v` in other functions decrease verbose.
 
 
-Compound time range and all single unit results:
+All single unit results _only_:
 
 ```
 % datediff.sh -v 2008-01-15
-
-16Y 10M 00W 03D  21h 24m 19s
-16.8 years | 378.8 months | 879.0 weeks | 6152.9 days | 147669.4 hours | 8860164.3 mins | 531609859 secs
-```
-
-All single unit results only:
-
-```
-% datediff.sh -vv 2008-01-15
 
 16.8 years | 378.8 months | 879.0 weeks | 6152.9 days | 147669.4 hours | 8860165.2 mins | 531609914 secs
 ```
 
 <!--
-Compound time range only:
+Compound time range _only_:
 
 ```
-% datediff.sh -vvv 2008-01-15
+% datediff.sh -vv 2008-01-15
 
 16Y 10M 00W 03D  21h 25m 28s
 ```
@@ -105,7 +97,7 @@ Compound time range only:
 Compound time range (`AST date` style):
 
 ```
-% datediff.sh -vvvv 2008-01-15
+% datediff.sh -vvv 2008-01-15
 
 16Y10M00W03D21h25m34s
 ```
@@ -143,7 +135,7 @@ must set both `options -ttvv` at the command line incantation:
 
 
 ```
-% datediff.sh -3 -ttvv 2008-01-15
+% datediff.sh -3 -ttv 2008-01-15
 
 Years	       16.844
 Months	      378.833

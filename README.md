@@ -131,7 +131,7 @@ There is also a table layout with single-unit results. This is activated with
 `option -t`.
 
 To **print results in the table layout only**, the user
-must set both `options -ttvv` at the command line incantation:
+must set both `options -ttv` at the command line incantation:
 
 
 ```

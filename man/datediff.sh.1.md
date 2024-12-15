@@ -321,7 +321,7 @@ optionally required.
 
 **-t**, **-tt**
 
-:    Table display of single unit intervals (such as `-vtt`).
+:    Table display of single unit intervals (such as `-ttv`).
 
 **-u**
 

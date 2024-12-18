@@ -1,4 +1,4 @@
-% DATEDIFF.SH(1) v0.25.2 | General Commands Manual
+% DATEDIFF.SH(1) v0.25.3 | General Commands Manual
 % Jamil Soni N
 % December 2024
 
@@ -227,7 +227,7 @@ optionally required.
 
 |    datediff.sh **-F** sun 12 1999
 
-**Single unit time periods**
+**Single-unit time periods**
 
 |    datediff.sh 2022-03-01T00:00:00 2022-03-01T10:10:10 _m_
 |    datediff.sh \'10 years ago\'  _mo_
@@ -298,7 +298,7 @@ optionally required.
 
 **-[**_0-9_**]**
 
-:    Set scale for single unit interval results.
+:    Set scale for single-unit interval results.
 
 **-DD**, **-dd**
 
@@ -321,7 +321,7 @@ optionally required.
 
 **-t**, **-tt**
 
-:    Table display of single unit intervals (such as `-ttv`).
+:    Table displays of all single-unit intervals.
 
 **-u**
 

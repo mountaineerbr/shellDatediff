@@ -130,12 +130,12 @@ Results are subject to rounding for improved precision!
 There is also a table layout with single-unit results. This is activated with
 `option -t`.
 
-To **print results in the table layout only**, the user
-must set both `options -ttv` at the command line incantation:
+To **print results in the table layout**, set `options -tt`
+at the command line incantation:
 
 
 ```
-% datediff.sh -3 -tv 2008-01-15
+% datediff.sh -3 -t 2008-01-15
 
 Years	       16.915
 Months	      379.704

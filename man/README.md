@@ -2,7 +2,7 @@
 author:
 - Jamil Soni N
 date: December 2024
-title: DATEDIFF.SH(1) v0.25.2 \| General Commands Manual
+title: DATEDIFF.SH(1) v0.25.3 \| General Commands Manual
 ---
 
 # NAME
@@ -213,7 +213,7 @@ Tip: Division is but subtractions and multiplication but additions.
 
    datediff.sh **-F** sun 12 1999
 
-**Single unit time periods**
+**Single-unit time periods**
 
    datediff.sh 2022-03-01T00:00:00 2022-03-01T10:10:10 *m*  
    datediff.sh '10 years ago' *mo*  
@@ -275,7 +275,7 @@ Print lunar phase at DATE (ISO UTC time).
 **Main Function**
 
 **-\[***0-9***\]**  
-Set scale for single unit interval results.
+Set scale for single-unit interval results.
 
 **-DD**, **-dd**  
 Debug options, check the Debug Section above.
@@ -290,7 +290,7 @@ Print human time in RFC-5322 format (verbose).
 Input DATES are UNIX timestamps.
 
 **-t**, **-tt**  
-Table display of single unit intervals (such as `-ttv`).
+Table displays of all single-unit intervals.
 
 **-u**  
 Set or print in UTC times instead of local times. This affects how

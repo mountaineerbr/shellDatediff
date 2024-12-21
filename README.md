@@ -47,9 +47,6 @@ When only one date is specified, the first date is assumed to be *now* or *1970*
 
 Note that `option -u` sets dates as UTC time and it influences how the underlying `C-code date` programme works.
 
-To test the shell built-in code for the ISO-8601 and UNIX times tamp processing and conversion
-without wrapping the `C-code date` programme, set `options -DD`.
-
 Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the specified time frame result.
 
 Alternatively, set `options -vvv` to filter the main output layout for specific fields.
@@ -62,6 +59,9 @@ For example, print the **compound time range** _only_:
 
 6Y 00M 02W 03D  16h 00m 12s
 ```
+
+To test the shell built-in code for the ISO-8601 and UNIX times tamp processing and conversion
+without wrapping the `C-code date` programme, set `options -DD`.
 
 
 ### Result layout
@@ -158,7 +158,7 @@ Fri, 13 Oct 2023 is  245 days away
 Set `options -FF` to get the next 10 dates.
 
 
-### Check whether year 2023 *is leap*
+### Check whether a year *is leap*
 
 ```
 % datediff.sh -l 2023
@@ -171,7 +171,7 @@ The exit code is *1* if a year _is_ _not_ leap.
 Set `option -v` to decrease verbose. 
 
 
-### Generate the *lunar phase calendar* for *February, 20023*
+### Generate the *lunar phase calendar*
 
 ```
 % datediff.sh -m 2023-02
@@ -190,7 +190,7 @@ Set `option -v` to decrease verbose.
 Also try `datediff.sh -m 2024-{02..12}` for multiple months!
 
 
-### Generate dates for *Carnaval*, *Easter* and *Corpus Christi* dates
+### Print dates of *Carnaval*, *Easter* and *Corpus Christi*
 
 ```
 % datediff.sh -ee 2023

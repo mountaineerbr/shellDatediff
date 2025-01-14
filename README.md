@@ -14,8 +14,6 @@ The script warps `GNU`/`BSD` `C-code date` programme to process input
 date strings in various formats (main function), otherwise
 input must be *ISO-8601* or *UNIX* times.
 
-Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L186), and [man page](man/README.md).
-
 
 ## ✨ Features
 
@@ -221,6 +219,8 @@ or the [online man page](man/README.md).
 
 - GitLab <https://gitlab.com/fenixdragao/shelldatediff>
 - GitHub <https://github.com/mountaineerbr/shellDatediff>
+
+Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L186), and [man page](man/README.md).
 
 
 ## See Also

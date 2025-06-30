@@ -2,9 +2,9 @@
 Calculate time differences with shell builtins.
 
 
-Shell utility for calculating time intervals between dates. Works with Ksh, Bash and Zsh.
-
 ![Showing off datediff.sh script](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
+
+Shell utility for calculating time intervals between dates. Works with Ksh, Bash and Zsh.
 
 The project contains a small shell library to calculate **elapsed time between dates** as **compound time ranges** and as **single-unit fractions** - all while handling timezone offsets.
 

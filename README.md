@@ -1,51 +1,48 @@
 # shellDatediff
-Calculate time differences with Ksh, Bash and Zsh built-ins.
+Calculate time differences with shell builtins.
+
+
+Shell utility for calculating time intervals between dates. Works with Ksh, Bash and Zsh.
 
 ![Showing off datediff.sh script](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
 
-The project contains a small shell library to calculate elapsed time
-between two dates in various time units and some extra functions for
-day-to-day use.
+The project contains a small shell library to calculate **elapsed time between dates** as **compound time ranges** and as **single-unit fractions** - all while handling timezone offsets.
 
-Results are delivered in different units taking into account all time
-units (*compound time range*), or as a fractional single time unit.
+The script works with ISO-8601 and UNIX timestamps directly. It can optionally leverage `C-code date` to process diverse date formats as input.
 
-The script warps `GNU`/`BSD` `C-code date` programme to process input
-date strings in various formats (main function), otherwise
-input must be *ISO-8601* or *UNIX* times.
+Beyond time intervals, it offers a few helpful calendar functions for day-to-day use.
 
 
 ## ✨ Features
 
-- Date input as *ISO-8601*, or *UNIX times*. Optionally, warps `C-code date`.
-- Date offset aware, heeds environment `$TZ`
+- Date input as *ISO-8601*, or *UNIX time*
+- Optionally warps `C-code date` to parse various date formats
+- Timezone offset aware, heeds environment `$TZ`
 - Check whether year is leap
-- Check moon / lunar phases
-- Check Easter, Carnaval, and Corpus Christi dates
-- Check for next Friday the 13th
-- Get input from _stdin_
+- Calculate moon / lunar phases
+- Calculate Easter, Carnaval, and Corpus Christi dates
+- Check for next Friday the 13th (or any day-of-week/month combination)
+- _Stdin_ _input_ (pipe) support
 
 
 ## Usage Examples
 
-### Time elapsed from *January 15th, 2008* to *now*
+### Time elapsed between two dates
 
 ```
-% datediff.sh -u 2008-01-15
+% datediff.sh -u  2008-01-15  2024-09-11
 
-DATES-
+DATES
 2008-01-15T00:00:00+00:00       1200355200
-2024-09-11T16:15:34+00:00       1726071334
+2024-09-11T00:00:00+00:00       1726012800
 RANGES
-16Y 07M 03W 06D  16h 15m 34s
-16.7 years | 376.6 months | 869.2 weeks | 6084.7 days | 146032.3 hours | 8761935.6 mins | 525716134 secs
+16Y 07M 03W 06D  00h 00m 00s
+16.7 years | 199.9 months | 869.1 weeks | 6084.0 days | 146016.0 hours | 8760960.0 mins | 525657600 secs
 ```
 
-When only one date is specified, the first date is assumed to be *now* or *1970*.
+`Option -u` sets dates as UTC time and it also influences how the underlying `C-code date` programme processes dates.
 
-Note that `option -u` sets dates as UTC time and it influences how the underlying `C-code date` programme works.
-
-Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the specified time frame result.
+Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the [specified time frame result](#-single-time-unit-result).
 
 Alternatively, set `options -vvv` to filter the main output layout for specific fields.
 
@@ -53,18 +50,23 @@ For example, print the **compound time range** _only_:
 
 
 ```
-% datediff.sh -vv tomorrow+6years+400hours+12seconds
+% datediff.sh -vv  2025-03-30T12:33:58  2031-04-17T04:34:10
 
 6Y 00M 02W 03D  16h 00m 12s
 ```
 
-To test the shell built-in code for the ISO-8601 and UNIX times tamp processing and conversion
-without wrapping the `C-code date` programme, set `options -DD`.
+Mind that input dates must be ISO-8601 or UNIX time.
+When available, `C-code date` is leveraged to parse
+user input in various date formats.
+
+<!-- 
+To avoid wrapping the `C-code date` programme to process dates,
+set `options -DD`. -->
 
 
 ### Result layout
 
-The main function is very verbose by defaults and
+The main function is very verbose by default and
 prints two sections with processed dates (**DATES**) and time range results (**RANGES**).
 
 The user can filter out which fields are going to be calculated and printed.
@@ -73,13 +75,17 @@ Set the verbose `option -v` up to three times to select different layouts in
 the main function. Setting `-v` in other functions decrease verbose.
 
 
-All single unit results _only_:
+Set **option -v** once to print all single unit results _only_:
 
 ```
-% datediff.sh -v 2008-01-15
-
-16.8 years | 378.8 months | 879.0 weeks | 6152.9 days | 147669.4 hours | 8860165.2 mins | 531609914 secs
+% datediff.sh -v  2008-01-15
+17.4 years | 209.3 months | 910.3 weeks | 6371.8 days | 152923.3 hours | 9175400.5 mins | 550524032 secs
 ```
+
+**Note:** if only one date is specified,
+the first date is assumed to be **now**.
+. <!-- (or **1970** as last fallback). -->
+
 
 <!--
 Compound time range _only_:
@@ -95,7 +101,7 @@ Compound time range _only_:
 Compound time range (`AST date` style):
 
 ```
-% datediff.sh -vvv 2008-01-15
+% datediff.sh -vvv  2008-01-15
 
 16Y10M00W03D21h25m34s
 ```
@@ -108,15 +114,15 @@ The user can optionally set the last positional parameter as exactly
 
 
 ```
-% datediff.sh 2008-01-15  mo
+% datediff.sh  2008-01-15  2025-06-25  mo
 
-378.8 months
+209.3 months
 ```
 
 
 ### Decimal plates
 
-The number of decimal plates shown in float results can be set with `options -[num]`,
+The number of decimal plates shown in float results can be set with `option -[num]`,
 where _num_ is an integer. For three decimal plates, the incantation should start as
 `datediff.sh -3`.
 
@@ -133,30 +139,40 @@ at the command line incantation:
 
 
 ```
-% datediff.sh -3 -t 2008-01-15
-
-Years	       16.915
-Months	      379.704
-Weeks	      882.690
-Days	     6178.831
-Hours	   148291.953
-Mins	  8897517.150
-Secs	533851029
+% datediff.sh -3 -t -u  2008-01-15  2024-12-14
+Years          16.913
+Months        202.968
+Weeks         882.571
+Days         6178.000
+Hours      148272.000
+Mins      8896320.000
+Secs    533779200
 ```
 
 
-### Check when next *Friday the 13th* is
+### Check when **next Friday the 13th** is:
 
 ```
-% datediff.sh -F Fri 13
+% datediff.sh -F  Fri 13
 
 Fri, 13 Oct 2023 is  245 days away
+```
+
+Optionally set a *start date*.  <!-- following date -->
+
+
+Check any combination of **day-in-week** and **day-in-month**:
+
+```
+% datediff.sh -F  Mon 1  2025-06-25
+
+Mon, 01 Sep 2025 is   68 days away
 ```
 
 Set `options -FF` to get the next 10 dates.
 
 
-### Check whether a year *is leap*
+### Check whether a **year is leap**
 
 ```
 % datediff.sh -l 2023
@@ -164,12 +180,12 @@ Set `options -FF` to get the next 10 dates.
 not leap year -- 2023
 ```
 
-The exit code is *1* if a year _is_ _not_ leap.
+The _exit code is 1_ if a year _is not_ leap.
 
 Set `option -v` to decrease verbose. 
 
 
-### Generate the *lunar phase calendar*
+### Generate **lunar phase calendar**
 
 ```
 % datediff.sh -m 2023-02
@@ -185,28 +201,58 @@ Set `option -v` to decrease verbose.
 2023-02-28  First Quarter
 ```
 
-Also try `datediff.sh -m 2024-{02..12}` for multiple months!
-
-
-### Print dates of *Carnaval*, *Easter* and *Corpus Christi*
+For multiple-month calendar:
 
 ```
-% datediff.sh -ee 2023
+% datediff.sh -m 2024-{02..12}
+```
+
+
+### Calculate dates of **Carnaval**, **Easter** and **Corpus Christi**
+
+```
+% datediff.sh -ee  2023
 
   Carnaval          Easter      CorpusChristi
 2023-02-21      2023-04-09      2023-06-08
 ```
 
-Set multiple years to get a nice `TSV`-formatted output.
+Set multiple years to generate a table of dates:
+<!-- a nice `TSV`-formatted table -->
+
+```
+% datediff.sh -ee  20{23..30}
+  Carnaval          Easter      CorpusChristi
+2023-02-21      2023-04-09      2023-06-08
+2024-02-13      2024-03-31      2024-05-30
+2025-03-04      2025-04-20      2025-06-19
+2026-02-17      2026-04-05      2026-06-04
+2027-02-09      2027-03-28      2027-05-27
+2028-02-29      2028-04-16      2028-06-15
+2029-02-13      2029-04-01      2029-05-31
+2030-03-05      2030-04-21      2030-06-20
+```
 
 The dates are for the Western Church.
 
 
-## Requirements
+## More Examples
+
+Check further [examples at the man page](man#examples).
+
+
+## Dependencies
 
 - `Ksh93`, `Bash`, or `Zsh`
 - `GNU`/`BSD`/`AST`/`Busybox` `date` (optional)
-- `Bc` and `Dc` (optional)
+- Basic Calculator `bc` and Desk Calculator `dc` (optional)
+
+
+### Debugging dependencies
+
+- `datedff.debug.sh` script
+- `GNU`/`BSD` `C-code date`
+- Hroptatyr's `C-code datediff`
 
 
 ## Help

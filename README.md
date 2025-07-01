@@ -251,8 +251,9 @@ Check further [examples at the man page](man#examples).
 ### Debugging dependencies
 
 - `datedff.debug.sh` script
-- `GNU`/`BSD` `C-code date`
 - Hroptatyr's `C-code datediff`
+
+<!-- - `GNU` `date` -->
 
 
 ## Help

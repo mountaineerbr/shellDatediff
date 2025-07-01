@@ -253,8 +253,6 @@ Check further [examples at the man page](man#examples).
 - `datedff.debug.sh` script
 - Hroptatyr's `C-code datediff`
 
-<!-- - `GNU` `date` -->
-
 
 ## Help
 

@@ -267,7 +267,7 @@ function taken from _Dershowitz and Reingold_'s paper.
 - `Bash2.05b+`, `Ksh93` or `Zsh` is required.
 - Basic Calculator `bc` or shell `Ksh93`/`Zsh` is required for single-unit time calculations.
 - `FreeBSD12+ date` or `GNU date` is optionally required to parse input date in various formats.
-- For debugging, _Hroptatyr_'s `C-code datediff`, `C-code date`, and `datediff.debug.sh` are needed.
+- For debugging, _Hroptatyr_'s `C-code datediff` and `datediff.debug.sh` are needed.
 
 
 # EXAMPLES

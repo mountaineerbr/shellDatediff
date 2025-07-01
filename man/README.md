@@ -235,8 +235,8 @@ mysterious function taken from *Dershowitz and Reingold*’s paper.
   single-unit time calculations.
 - `FreeBSD12+ date` or `GNU date` is optionally required to parse input
   date in various formats.
-- For debugging, *Hroptatyr*’s `C-code datediff`, `C-code date`, and
-  `datediff.debug.sh` are needed.
+- For debugging, *Hroptatyr*’s `C-code datediff` and `datediff.debug.sh`
+  are needed.
 
 # EXAMPLES
 

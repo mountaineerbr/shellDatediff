@@ -40,13 +40,18 @@ RANGES
 16.7 years | 199.9 months | 869.1 weeks | 6084.0 days | 146016.0 hours | 8760960.0 mins | 525657600 secs
 ```
 
-`Option -u` sets dates as UTC time and it also influences how the underlying `C-code date` programme processes dates.
+When only one date is specified, the first date is assumed to be **now**.
+<!-- (or **1970** as last fallback). -->
 
-Setting the last argument of the command line to exactly `y`, `mo`, `w`, `d`, `m`, or `s` will print only the [specified time frame result](#-single-time-unit-result).
+Setting `option -u` performs all date calculations in UTC.
+It also influences how the underlying `C-code date` programme processes dates.
+
+When the last argument of the command line is exactly `y`, `mo`, `w`, `d`, `m`, or `s`,
+only the [specified time frame result unit](#single-time-unit-result) is calculated.
 
 Alternatively, set `options -vvv` to filter the main output layout for specific fields.
 
-For example, print the **compound time range** _only_:
+For example, calculate the **compound time range** _only_:
 
 
 ```
@@ -63,6 +68,16 @@ user input in various date formats.
 To avoid wrapping the `C-code date` programme to process dates,
 set `options -DD`. -->
 
+<!--
+### Fun with History
+
+Calculate the age of the Apollo 11 mission at the moment of landing:
+
+```
+% datediff.sh -u  1969-07-20T20:17:40Z  now
+```
+-->
+
 
 ### Result layout
 
@@ -72,38 +87,27 @@ prints two sections with processed dates (**DATES**) and time range results (**R
 The user can filter out which fields are going to be calculated and printed.
 
 Set the verbose `option -v` up to three times to select different layouts in
-the main function. Setting `-v` in other functions decrease verbose.
+the main function. Setting `-v` in other functions decreases verbose.
 
 
 Set **option -v** once to print all single unit results _only_:
 
 ```
 % datediff.sh -v  2008-01-15
+
 17.4 years | 209.3 months | 910.3 weeks | 6371.8 days | 152923.3 hours | 9175400.5 mins | 550524032 secs
 ```
 
 **Note:** if only one date is specified,
 the first date is assumed to be **now**.
-. <!-- (or **1970** as last fallback). -->
-
-
-<!--
-Compound time range _only_:
-
-```
-% datediff.sh -vv 2008-01-15
-
-16Y 10M 00W 03D  21h 25m 28s
-```
--->
-
+Examples in this group run on 2025-06-25.
 
 Compound time range (`AST date` style):
 
 ```
 % datediff.sh -vvv  2008-01-15
 
-16Y10M00W03D21h25m34s
+17Y05M01W03D01h00m00s
 ```
 
 
@@ -139,45 +143,50 @@ at the command line incantation:
 
 
 ```
-% datediff.sh -3 -t -u  2008-01-15  2024-12-14
-Years          16.913
-Months        202.968
-Weeks         882.571
-Days         6178.000
-Hours      148272.000
-Mins      8896320.000
-Secs    533779200
+% datediff.sh -3 -t -u  2008-01-15  2025-06-25
+
+Years          17.440
+Months        209.323
+Weeks         910.143
+Days         6371.000
+Hours      152904.000
+Mins      9174240.000
+Secs    550454400
 ```
 
 
 ### Check when **next Friday the 13th** is:
 
+Using the current date by default (run on 2025-06-25):
+
 ```
 % datediff.sh -F  Fri 13
 
-Fri, 13 Oct 2023 is  245 days away
+Fri, 13 Feb 2026 is  233 days away
 ```
-
-Optionally set a *start date*.  <!-- following date -->
 
 
 Check any combination of **day-in-week** and **day-in-month**:
 
-```
-% datediff.sh -F  Mon 1  2025-06-25
+Optionally specify a *start date* for the search.
 
-Mon, 01 Sep 2025 is   68 days away
+```
+% datediff.sh -F  Mon 1  2030-04-10
+
+
+Mon, 01 Jul 2030 is   82 days away
+
 ```
 
-Set `options -FF` to get the next 10 dates.
+Set `options -FF` to print the following 10 date matches as a list!
 
 
 ### Check whether a **year is leap**
 
 ```
-% datediff.sh -l 2023
+% datediff.sh -l  2032
 
-not leap year -- 2023
+leap year -- 2032
 ```
 
 The _exit code is 1_ if a year _is not_ leap.
@@ -188,36 +197,43 @@ Set `option -v` to decrease verbose.
 ### Generate **lunar phase calendar**
 
 ```
-% datediff.sh -m 2023-02
+% datediff.sh -m  2030-01
 
-2023-02-01  First Quarter
-2023-02-02  Waxing Gibbous
-2023-02-06  Full Moon
-2023-02-09  Waning Gibbous
-2023-02-13  Last Quarter
-2023-02-17  Waning Crescent
-2023-02-20  New Moon
-2023-02-24  Waxing Crescent
-2023-02-28  First Quarter
+2030-01-01  Waning Crescent
+2030-01-03  New Moon
+2030-01-07  Waxing Crescent
+2030-01-10  First Quarter
+2030-01-14  Waxing Gibbous
+2030-01-18  Full Moon
+2030-01-21  Waning Gibbous
+2030-01-25  Last Quarter
+2030-01-29  Waning Crescent
 ```
 
 For multiple-month calendar:
 
 ```
-% datediff.sh -m 2024-{02..12}
+% datediff.sh -m  2030-{01..12}
+
+#OR
+
+% datediff.sh -m  2030
 ```
 
+Setting `option -m` without an argument shows the moon phase for current date.
 
-### Calculate dates of **Carnaval**, **Easter** and **Corpus Christi**
+
+### Compute dates of **Carnaval**, **Easter** and **Corpus Christi**
 
 ```
-% datediff.sh -ee  2023
+% datediff.sh -ee  2030
 
   Carnaval          Easter      CorpusChristi
-2023-02-21      2023-04-09      2023-06-08
+2030-03-05      2030-04-21      2030-06-20
+
 ```
 
-Set multiple years to generate a table of dates:
+Set multiple years to calculate a table of dates:
 <!-- a nice `TSV`-formatted table -->
 
 ```
@@ -233,7 +249,7 @@ Set multiple years to generate a table of dates:
 2030-03-05      2030-04-21      2030-06-20
 ```
 
-The dates are for the Western Church.
+The dates are for the _Western_ _Church_.
 
 
 ## More Examples

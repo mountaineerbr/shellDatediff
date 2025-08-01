@@ -15,7 +15,7 @@ Beyond time intervals, it offers a few helpful calendar functions for day-to-day
 
 ## ✨ Features
 
-- Date input as *ISO-8601*, or *UNIX time*
+- Date input as *ISO-8601* or *UNIX time*
 - Optionally warps `C-code date` to parse various date formats
 - Timezone offset aware, heeds environment `$TZ`
 - Check whether year is leap
@@ -40,14 +40,14 @@ RANGES
 16.7 years | 199.9 months | 869.1 weeks | 6084.0 days | 146016.0 hours | 8760960.0 mins | 525657600 secs
 ```
 
-When only one date is specified, the first date is assumed to be **now**.
-<!-- (or **1970** as last fallback). -->
-
 Setting `option -u` performs all date calculations in UTC.
 It also influences how the underlying `C-code date` programme processes dates.
 
 When the last argument of the command line is exactly `y`, `mo`, `w`, `d`, `m`, or `s`,
 only the [specified time frame result unit](#single-time-unit-result) is calculated.
+
+If only one date is specified, the first date is assumed to be **now**.
+<!-- (or **1970** as last fallback). -->
 
 Alternatively, set `options -vvv` to filter the main output layout for specific fields.
 
@@ -81,10 +81,10 @@ Calculate the age of the Apollo 11 mission at the moment of landing:
 
 ### Result layout
 
-The main function is very verbose by default and
+The main function is verbose by default and
 prints two sections with processed dates (**DATES**) and time range results (**RANGES**).
 
-The user can filter out which fields are going to be calculated and printed.
+The user can filter out which fields are going to be calculated and displayed.
 
 Set the verbose `option -v` up to three times to select different layouts in
 the main function. Setting `-v` in other functions decreases verbose.
@@ -209,6 +209,9 @@ Set `option -v` to decrease verbose.
 2030-01-25  Last Quarter
 2030-01-29  Waning Crescent
 ```
+
+Port of the NetHack `phase_of_the_moon()` code;
+as an approximation, its results may differ slightly from actual moon phases.
 
 For multiple-month calendar:
 

@@ -304,9 +304,6 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 
         -->
 
-
-<br />
-
 ---
 
 <br />

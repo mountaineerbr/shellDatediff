@@ -309,18 +309,18 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 <br />
 <a href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
   <img width="128" height="128" alt="Datediff.sh script dark theme logo"
-  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-3/datediff_dark-3-128.png">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-5/datediff_dark-5-128.png">
+  &nbsp;&nbsp;&nbsp;
   <img width="128" height="128" alt="Datediff.sh script light theme logo"
-  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-3/datediff_light-3-128.png">
+  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-5/datediff_light-5-128.png">
 </p></a>
 
 
 <!-- User theme aware --> <!--
 <a href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-3/datediff_dark-3-128.png">
-    <img width="128" height="128" alt="Datediff.sh script logo" src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-3/datediff_light-3-128.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-5/datediff_dark-5-128.png">
+    <img width="128" height="128" alt="Datediff.sh script logo" src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-5/datediff_light-5-128.png">
   </picture>
 </p></a>
 -->

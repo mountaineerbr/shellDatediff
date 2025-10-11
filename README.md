@@ -4,13 +4,40 @@ Calculate time differences with shell builtins.
 
 ![Showing off datediff.sh script](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
 
-Shell utility for calculating time intervals between dates. Works with Ksh, Bash and Zsh.
+Shell utility for calculating time intervals between dates. Works with Ksh, Bash, and Zsh.
 
 The project contains a small shell library to calculate **elapsed time between dates** as **compound time ranges** and as **single-unit fractions** - all while handling timezone offsets.
 
 The script works with ISO-8601 and UNIX timestamps directly. It can optionally leverage `C-code date` to process diverse date formats as input.
 
 Beyond time intervals, it offers a few helpful calendar functions for day-to-day use.
+
+
+## Index
+
+<details>
+  <summary>★ Click to expand! ★</summary>
+
+- 1. [Features](#-features)
+- 2. [Installation](#installation)
+- 3. [Usage Examples](#usage-examples)
+  - 3.1 [Time elapsed between two dates](#time-elapsed-between-two-dates)
+  - 3.2 [Result layout](#result-layout)
+  - 3.3 [Single time unit result](#single-time-unit-result)
+  - 3.4 [Decimal plates](#decimal-plates)
+  - 3.5 [Table view](#table-view)
+  - 3.6 [Next Friday the 13th](#check-next-friday-the-13th)
+  - 3.7 [Check leap years](#check-whether-year-is-leap)
+  - 3.8 [Lunar calendars](#generate-lunar-phase-calendar)
+  - 3.9 [Carnaval, Easter and Corpus Christi](#carnaval-easter-and-corpus-christi)
+- 4. [More Examples](#more-examples)
+- 5. [Dependencies](#dependecies)
+- 6. [Debugging dependencies](#debugging-dependencies)
+- 7. [Help](#help)
+- 8. [Project Source](#project-source)
+- 9. [See Also](#see-also)
+
+</details>
 
 
 ## ✨ Features
@@ -23,6 +50,23 @@ Beyond time intervals, it offers a few helpful calendar functions for day-to-day
 - Calculate Easter, Carnaval, and Corpus Christi dates
 - Check for next Friday the 13th (or any day-of-week/month combination)
 - _Stdin_ _input_ (pipe) support
+
+
+## Installation
+
+Place [datediff.sh](datediff.sh) in your `$PATH` and make it executable.
+
+```
+chmod +x /path/to/datediff.sh
+```
+
+The script is compatible with `ksh`, `bash`, and `zsh`; the shebang may be changed as needed.
+
+Arch Linux users can install the [PKGBUILD from the AUR](https://aur.archlinux.org/packages/datediff.sh) with an AUR helper:
+
+```
+yay -S datediff.sh
+```
 
 
 ## Usage Examples
@@ -64,7 +108,7 @@ Mind that input dates must be ISO-8601 or UNIX time.
 When available, `C-code date` is leveraged to parse
 user input in various date formats.
 
-<!-- 
+<!--
 To avoid wrapping the `C-code date` programme to process dates,
 set `options -DD`. -->
 
@@ -155,9 +199,9 @@ Secs    550454400
 ```
 
 
-### Check when **next Friday the 13th** is:
+### Check **next Friday the 13th**
 
-Using the current date by default (run on 2025-06-25):
+Using the _current date_ by default, run on _2025-06-25_:
 
 ```
 % datediff.sh -F  Fri 13
@@ -171,17 +215,30 @@ Check any combination of **day-in-week** and **day-in-month**:
 Optionally specify a *start date* for the search.
 
 ```
-% datediff.sh -F  Mon 1  2030-04-10
+% datediff.sh -F  Mon 1  2030-01-01
 
-
-Mon, 01 Jul 2030 is   82 days away
-
+Mon, 01 Apr 2030 is   90 days away
 ```
 
 Set `options -FF` to print the following 10 date matches as a list!
 
+<!--
+% datediff.sh -FF Mon 1 2030
 
-### Check whether a **year is leap**
+Mon, 01 Apr 2030 is   90 days away
+Mon, 01 Jul 2030 is  181 days away
+Mon, 01 Sep 2031 is  608 days away
+Mon, 01 Dec 2031 is  699 days away
+Mon, 01 Mar 2032 is  790 days away
+Mon, 01 Nov 2032 is 1035 days away
+Mon, 01 Aug 2033 is 1308 days away
+Mon, 01 May 2034 is 1581 days away
+Mon, 01 Jan 2035 is 1826 days away
+Mon, 01 Oct 2035 is 2099 days away
+-->
+
+
+### Check whether **year is leap**
 
 ```
 % datediff.sh -l  2032
@@ -226,7 +283,7 @@ For multiple-month calendar:
 Setting `option -m` without an argument shows the moon phase for current date.
 
 
-### Compute dates of **Carnaval**, **Easter** and **Corpus Christi**
+### **Carnaval**, **Easter** and **Corpus Christi**
 
 ```
 % datediff.sh -ee  2030
@@ -290,11 +347,11 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 ## See Also
 
 - C-code `dateutils/datediff`, *Hroptatyr*, <http://www.fresse.org/dateutils/>.
-- Python `PDD`, *Jarun*,	<https://github.com/jarun/pdd>.
+- C-code `datediff`, *William C. Hammel*, <https://graham.main.nc.us/~bhammel/graham/CPROGS/datediff.html>.
+- Python `PDD`, *Jarun*, <https://github.com/jarun/pdd>.
 - *AST* `date`, see elapsed time _option_ _-E_, <https://github.com/att/ast>.
 - *GNU* `units`, <https://www.gnu.org/software/units/>.
 - \`\`Calendrical calculation'', *Dershowitz* and *Reingold*, 1990,	<http://www.cs.tau.ac.il/~nachum/papers/cc-paper.pdf>.
-
 
 
 <!--

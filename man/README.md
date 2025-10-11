@@ -1,8 +1,8 @@
 ---
 author:
 - Jamil Soni N
-date: June 2025
-title: DATEDIFF.SH(1) v0.27 \| General Commands Manual
+date: October 2025
+title: DATEDIFF.SH(1) v0.27.1 \| General Commands Manual
 ---
 
 # NAME
@@ -247,16 +247,16 @@ mysterious function taken from *Dershowitz and Reingold*’s paper.
 
 **Moon phases for January or full year**
 
-   datediff.sh **-m** 1996-01  
-   datediff.sh **-m** 1996
+   datediff.sh **-m** 2030-01  
+   datediff.sh **-m** 2030
 
 **Print following Friday, 13th**
 
    datediff.sh **-F**
 
-**Print following Sunday, 12th after 1999**
+**Print following Sunday, 12th at or after 2030-01-01**
 
-   datediff.sh **-F** sun 12 1999
+   datediff.sh **-F** sun 12 2030
 
 **Single-unit time periods**
 
@@ -317,7 +317,7 @@ Many thanks for all advice from c.u.shell!
 
 - “*Do calendrical savants use calculation to answer date questions?*” A
   functional magnetic resonance imaging study, *Cowan and Frith*, 2009
-  <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2677581/#!po=21.1864>.
+  <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2677581/>.
 
 - Calendrical calculation, *Dershowitz and Reingold*, 1990
   <http://www.cs.tau.ac.il/~nachum/papers/cc-paper.pdf>

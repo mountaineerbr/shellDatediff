@@ -2,7 +2,7 @@
 author:
 - Jamil Soni N
 date: October 2025
-title: DATEDIFF.SH(1) v0.27.1 \| General Commands Manual
+title: DATEDIFF.SH(1) v0.28 \| General Commands Manual
 ---
 
 # NAME

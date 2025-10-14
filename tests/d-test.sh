@@ -155,6 +155,8 @@ echo "N=$n"
 ##   is the preferred reference point for the specified time.  RFC2822
 ##   [IMAIL-UPDATE] describes a similar convention for email.
 
+#Hroptatyr datediff: 1601-01-01 and ending 4095-12-31
+
 
 #LIMITS
 #	Testing on ARM reveals that shell arithmetics can only count up

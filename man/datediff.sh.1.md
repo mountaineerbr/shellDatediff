@@ -1,4 +1,4 @@
-% DATEDIFF.SH(1) v0.27.1 | General Commands Manual
+% DATEDIFF.SH(1) v0.28 | General Commands Manual
 % Jamil Soni N
 % October 2025
 

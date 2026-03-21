@@ -73,6 +73,10 @@ yay -S datediff.sh
 
 ### Time elapsed between two dates
 
+If only one date is specified, the first date is assumed to be **now**.
+<!-- (or **1970** as last fallback). -->
+
+
 ```
 % datediff.sh -u  2008-01-15  2024-09-11
 
@@ -87,13 +91,10 @@ RANGES
 Setting `option -u` performs all date calculations in UTC.
 It also influences how the underlying `C-code date` programme processes dates.
 
-When the last argument of the command line is exactly `y`, `mo`, `w`, `d`, `m`, or `s`,
-only the [specified time frame result unit](#single-time-unit-result) is calculated.
+A single float time frame result may be calculated [when specified as the last positional argument](#single-time-unit-result).
+<!-- When the last argument of the command line is exactly `y`, `mo`, `w`, `d`, `m`, or `s`, -->
 
-If only one date is specified, the first date is assumed to be **now**.
-<!-- (or **1970** as last fallback). -->
-
-Alternatively, set `options -vvv` to filter the main output layout for specific fields.
+Set `options -vvv` to filter the main output layout for specific fields (main function).
 
 For example, calculate the **compound time range** _only_:
 
@@ -142,9 +143,9 @@ Set **option -v** once to print all single unit results _only_:
 17.4 years | 209.3 months | 910.3 weeks | 6371.8 days | 152923.3 hours | 9175400.5 mins | 550524032 secs
 ```
 
-**Note:** if only one date is specified,
-the first date is assumed to be **now**.
-Examples in this group run on 2025-06-25.
+**Note:**  Examples in this group run on 2025-06-25.
+<!-- if only one date is specified,
+the first date is assumed to be **now**. -->
 
 Compound time range (`AST date` style):
 
@@ -179,11 +180,8 @@ Results are subject to rounding for improved precision!
 
 ### Table view
 
-There is also a table layout with single-unit results. This is activated with
-`option -t`.
-
-To **print results in the table layout**, set `options -tt`
-at the command line incantation:
+**Print results in table layout** with `options -tt` at the
+command line incantation (single-unit intervals):
 
 
 ```

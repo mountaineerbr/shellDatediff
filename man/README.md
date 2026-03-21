@@ -1,8 +1,8 @@
 ---
 author:
 - Jamil Soni N
-date: October 2025
-title: DATEDIFF.SH(1) v0.28 \| General Commands Manual
+date: March 2026
+title: DATEDIFF.SH(1) v0.29 \| General Commands Manual
 ---
 
 # NAME
@@ -334,6 +334,7 @@ Many thanks for all advice from c.u.shell!
 <!--
 - "_Division is but subtractions and multiplication but additions_" \--Lost reference
 -->
+
 <!-- Generate the man page:
     pandoc --standalone --to man ./datediff.sh.1.md -o ./datediff.sh.1
 -->

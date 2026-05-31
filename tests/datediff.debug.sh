@@ -1,16 +1,11 @@
-# datediff.debug.sh v0.25
-# Function for `mountaineer's `chatgpt.sh''
+# datediff.debug.sh
+# jun/2026   mountaineerbr
+# run checks against `c-code datediff' and `c-code date'
+# this function must be under `$PATH' or `$PWD' to be sourced
 
-# Option -d sets TZ=UTC, unsets verbose switches and run checks
-# against \`C-code datediff' and \`C-code date'. Set once to dump
-# only when results differ and set twice to code exit only.
-
-#Copy the function body to where debugf() is in `chatgpt.sh' (fast).
-#Otherwise this function must be under your `$PATH' to be sourced.
-
-#Execute result checks against `datediff' and `date'.
+#Execute result checks against c-code `datediff' and `date'.
 #GNU date preferably. Input must be well-formatted ISO8601.
-#We defaults to UTC while `date' may set random offsets.
+#The function expects UTC while `date' may set random offsets.
 function debugf
 {
 		unset unix2t unix1t buf d_cmd ranget utc2t utc1t rfc2t rfc1t ddout y_dd mo_dd w_dd d_dd h_dd m_dd s_dd dd brk ret
@@ -36,7 +31,7 @@ function debugf
 		then 	set -- "$2" "$1" ;buf=$unix1t unix1t=$unix2t unix2t=$buf
 		fi
 		((ranget=unix2t-unix1t))
-		
+
 		utc2t=$(datefun -Isec "$2") utc1t=$(datefun -Isec "$1")
 		((OPTRR)) && rfc2t=$(datefun -R "$2") rfc1t=$(datefun -R "$1")
 
@@ -55,7 +50,7 @@ function debugf
 
 			((unix2==unix2t)) && ((unix1==unix1t)) &&
 		 	((range==(unix2t-unix1t) )) &&
-			
+
 			[[ ${sh[*]} = "${dd[*]:-${sh[*]}}" ]]
 		} || { 	#brk='\n'
 			echo -ne "\033[2K" >&2

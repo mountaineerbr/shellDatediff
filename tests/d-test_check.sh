@@ -1,26 +1,33 @@
 #!/usr/bin/env ksh
-#check datediff.sh debug log
-#pipe debug log from datediff,sh to this script!
+# d-test_check.sh  jun/26  by mountaineerbr
+# filter datediff.debug.sh log
+# pipe debug log from datediff.sh to this script!
 
-pl() { 	echo $line "    [$n]" ;}
+function pl { 	printf '%s\n' "$line    [$n]    $dates${1:+    $1}" ;}
 
-sed -e 's/sh=// ;s/dd=//' -e 1,3d -e 's/^.*|\s*//' |
-while read Y M W D H MIN S  y m w d h min s
-do 	((++n))
+
+sed -e 's/sh=// ;s/dd=//' -e 1,3d -e 's/\s*|\s*.*|\s*/ /' |
+while read  dates  Y M W D H MIN S  y m w d h min s
+do
+	((++n))
 	line="sh=$Y $M $W  $D $H $MIN $S  dd=$y $m $w  $d $h $min $s"
-	{ [[ ! $s ]] || [[ ! $S ]] ;} && echo bad line $n -- $lineX >&2
+	{ [[ ! -n "$s" ]] || [[ ! -n "$S" ]] ;} && echo "bad line $n -- ${dates:-err}" >&2
 
-	#TESTS
-	#here, we can check both shell and C-code datediff results (compound range).
-	#easy to compare fields: UPPERCASE are for shell datediff
-	#and lowercase are for C-code datediff.
+	#TEST EXAMPLES
+	#Compare shell and c-code datediff results.
+	#UPPERCASE vars are for shell datediff.sh,
+	#and lowercase are for c-code datediff.
 
-	#((w>4)) && pl                          ##ddiff weeks>4##
-	#((W==4)) && ((D<4)) && ((w<=4)) && pl  ##sh weeks==4, days<4 and ddiff weeks<=4##
-	#((M+1==m)) && pl                       ##sh months is more refined than ddiff at the months/weeks interface##
-	#((m+1==M)) && pl
+	#((w>4)) && { pl; continue; }  # c-code ddiff weeks>4
+	#((W==4)) && ((D<4)) && ((w<=4)) && { pl; continue ;}  # shell weeks==4, days<4 and ddiff weeks<=4
+	#((w>4)) || { ((W==4)) && ((D<4)) && ((w<=4)) ;} || { pl; continue ;}  # c-code ddiff related
 
-	#((w>4)) || { ((W==4)) && ((D<4)) && ((w<=4)) ;} || pl
+	#((M+1==m)) && ((W>=4)) && { pl; continue; }  # shell is more granular
+	#((M==m+1)) && ((w>=4)) && { pl; continue; }  # c-code more refined
+
+	((S==s && MIN==min && H==h)) || pl  # same seconds, minutes, and hours
 
 done
+echo $'\n' >&2
+echo "N=${n:-err}"
 

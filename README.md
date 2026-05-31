@@ -6,7 +6,7 @@ Calculate time differences with shell builtins.
 
 Shell utility for calculating time intervals between dates. Works with Ksh, Bash, and Zsh.
 
-The project contains a small shell library to calculate **elapsed time between dates** as **compound time ranges** and as **single-unit fractions** - all while handling timezone offsets.
+The project contains a small shell library to calculate **elapsed time between dates** as **compound time ranges** and as **single-unit fractions**.
 
 The script works with ISO-8601 and UNIX timestamps directly. It can optionally leverage `C-code date` to process diverse date formats as input.
 
@@ -20,36 +20,38 @@ Beyond time intervals, it offers a few helpful calendar functions for day-to-day
 
 - 1. [Features](#-features)
 - 2. [Installation](#installation)
-- 3. [Usage Examples](#usage-examples)
-  - 3.1 [Time elapsed between two dates](#time-elapsed-between-two-dates)
-  - 3.2 [Result layout](#result-layout)
-  - 3.3 [Single time unit result](#single-time-unit-result)
-  - 3.4 [Decimal plates](#decimal-plates)
-  - 3.5 [Table view](#table-view)
-  - 3.6 [Next Friday the 13th](#check-next-friday-the-13th)
-  - 3.7 [Check leap years](#check-whether-year-is-leap)
-  - 3.8 [Lunar calendars](#generate-lunar-phase-calendar)
-  - 3.9 [Carnaval, Easter and Corpus Christi](#carnaval-easter-and-corpus-christi)
-- 4. [More Examples](#more-examples)
-- 5. [Dependencies](#dependecies)
-- 6. [Debugging dependencies](#debugging-dependencies)
-- 7. [Help](#help)
-- 8. [Project Source](#project-source)
-- 9. [See Also](#see-also)
+  - 2.1 [Arch linux users](#arch-linux)
+- 3. [Time Elapsed Between Two Dates](#time-elapsed-between-dates)
+  - 3.1 [Fun with history](#fun-with-history)
+- 4. [Compound Time Range](#compound-time-range)
+- 5. [Single-Unit Time Ranges](#single-unit-time-ranges)
+  - 5.1 [Single-unit result](#single-unit-result)
+  - 5.2 [Table view](#table-view)
+  - 5.3 [Decimal plates](#decimal-plates)
+- 6. [Next Friday the 13th](#next-friday-the-13th)
+  - 6.1 [Other weekday day-of-month pairs](#other-weekday-day-of-month-pairs)
+- 7. [Lunar Calendars](#lunar-calendars)
+- 8. [Carnaval, Easter and Corpus Christi](#carnaval-easter-and-corpus-christi)
+- 9. [Leap Year Check](#leap-year-check)
+- 10. [More Examples](#more-examples)
+- 11. [Help](#help)
+- 12. [Dependencies](#dependencies)
+- 13. [Debugging Dependencies](#debugging-dependencies)
+- 14. [Project Source](#project-source)
+- 15. [See Also](#see-also)
+- 16. [Logo Art](#see-also)
 
 </details>
 
 
 ## ✨ Features
 
-- Date input as *ISO-8601* or *UNIX time*
-- Optionally warps `C-code date` to parse various date formats
-- Timezone offset aware, heeds environment `$TZ`
-- Check whether year is leap
-- Calculate moon / lunar phases
-- Calculate Easter, Carnaval, and Corpus Christi dates
-- Check for next Friday the 13th (or any day-of-week/month combination)
-- _Stdin_ _input_ (pipe) support
+- [Time lapse overview](#time-elapsed-between-dates)
+- [Moon phase calendars](#lunar-calendars)
+- [Easter, Carnaval, and Corpus Christi dates](#carnaval-easter-and-corpus-christi)
+- [Next Friday the 13th](#next-friday-the-13th)
+- [Check whether year is leap](#leap-year-check)
+- [Extra input time formats with `C-code date`](#fun-with-history)
 
 
 ## Installation
@@ -60,7 +62,7 @@ Place [datediff.sh](datediff.sh) in your `$PATH` and make it executable.
 chmod +x /path/to/datediff.sh
 ```
 
-The script is compatible with `ksh`, `bash`, and `zsh`; the shebang may be changed as needed.
+### Arch Linux
 
 Arch Linux users can install the [PKGBUILD from the AUR](https://aur.archlinux.org/packages/datediff.sh) with an AUR helper:
 
@@ -68,12 +70,16 @@ Arch Linux users can install the [PKGBUILD from the AUR](https://aur.archlinux.o
 yay -S datediff.sh
 ```
 
+The script is compatible with `ksh`, `bash`, and `zsh`; the shebang may be changed as needed.
 
-## Usage Examples
 
-### Time elapsed between two dates
+## Time Elapsed Between Dates
+
+The main function is verbose by default and prints two sections with
+processed dates (**DATES**) and time range results (**RANGES**).
 
 If only one date is specified, the first date is assumed to be **now**.
+
 <!-- (or **1970** as last fallback). -->
 
 
@@ -91,12 +97,26 @@ RANGES
 Setting `option -u` performs all date calculations in UTC.
 It also influences how the underlying `C-code date` programme processes dates.
 
-A single float time frame result may be calculated [when specified as the last positional argument](#single-time-unit-result).
-<!-- When the last argument of the command line is exactly `y`, `mo`, `w`, `d`, `m`, or `s`, -->
 
-Set `options -vvv` to filter the main output layout for specific fields (main function).
+### Fun with history
 
-For example, calculate the **compound time range** _only_:
+Calculate the age of the Apollo 11 mission at the moment of landing:
+
+```
+% datediff.sh -u  "1969-07-20T20:17:40Z"  "now"
+```
+
+Mind that input dates must be ISO-8601 or UNIX time.
+When available, `C-code date` is used to parse
+user input in various date formats.
+
+
+## Compound Time Range
+
+The **compound range** takes into consideration each time unit in relation
+to the others for a human-readable result.
+
+Use `options` `-vv` and `-vvv` to print **the compound range** _alone_.
 
 
 ```
@@ -105,49 +125,7 @@ For example, calculate the **compound time range** _only_:
 6Y 00M 02W 03D  16h 00m 12s
 ```
 
-Mind that input dates must be ISO-8601 or UNIX time.
-When available, `C-code date` is leveraged to parse
-user input in various date formats.
-
-<!--
-To avoid wrapping the `C-code date` programme to process dates,
-set `options -DD`. -->
-
-<!--
-### Fun with History
-
-Calculate the age of the Apollo 11 mission at the moment of landing:
-
-```
-% datediff.sh -u  1969-07-20T20:17:40Z  now
-```
--->
-
-
-### Result layout
-
-The main function is verbose by default and
-prints two sections with processed dates (**DATES**) and time range results (**RANGES**).
-
-The user can filter out which fields are going to be calculated and displayed.
-
-Set the verbose `option -v` up to three times to select different layouts in
-the main function. Setting `-v` in other functions decreases verbose.
-
-
-Set **option -v** once to print all single unit results _only_:
-
-```
-% datediff.sh -v  2008-01-15
-
-17.4 years | 209.3 months | 910.3 weeks | 6371.8 days | 152923.3 hours | 9175400.5 mins | 550524032 secs
-```
-
-**Note:**  Examples in this group run on 2025-06-25.
-<!-- if only one date is specified,
-the first date is assumed to be **now**. -->
-
-Compound time range (`AST date` style):
+Using `AST date` style layout:
 
 ```
 % datediff.sh -vvv  2008-01-15
@@ -155,10 +133,29 @@ Compound time range (`AST date` style):
 17Y05M01W03D01h00m00s
 ```
 
+## Single-Unit Time Ranges
 
-### Single time unit result
+There are various ways to get information between two dates
+on a specific time unit.
 
-The user can optionally set the last positional parameter as exactly
+Set `option -v` once to print all single-unit results _alone_:
+
+```
+% datediff.sh -v  2008-01-15
+
+17.4 years | 209.3 months | 910.3 weeks | 6371.8 days | 152923.3 hours | 9175400.5 mins | 550524032 secs
+```
+
+**Note:**  Example command run on 2025-06-25.
+
+<!-- if only one date is specified,
+the first date is assumed to be **now**. -->
+
+
+### Single-unit result
+
+A single float time result may be calculated when the user
+gives the last positional parameter as exactly
 `y`, `mo`, `w`, `d`, `m` or `s` to print only the specific single-unit result:
 
 
@@ -169,19 +166,10 @@ The user can optionally set the last positional parameter as exactly
 ```
 
 
-### Decimal plates
-
-The number of decimal plates shown in float results can be set with `option -[num]`,
-where _num_ is an integer. For three decimal plates, the incantation should start as
-`datediff.sh -3`.
-
-Results are subject to rounding for improved precision!
-
-
 ### Table view
 
-**Print results in table layout** with `options -tt` at the
-command line incantation (single-unit intervals):
+**Print results in table layout** with `options` `-t` and `-tt`
+(single-unit intervals):
 
 
 ```
@@ -197,7 +185,16 @@ Secs    550454400
 ```
 
 
-### Check **next Friday the 13th**
+### Decimal plates
+
+The number of decimal plates shown in float results can be set with `option -[NUM]`,
+where _NUM_ is an integer. For three decimal plates, the incantation should start as
+`datediff.sh -3`.
+
+Results are subject to rounding for improved precision!
+
+
+## Next Friday the 13th
 
 Using the _current date_ by default, run on _2025-06-25_:
 
@@ -207,6 +204,8 @@ Using the _current date_ by default, run on _2025-06-25_:
 Fri, 13 Feb 2026 is  233 days away
 ```
 
+
+### Other weekday day-of-month pairs
 
 Check any combination of **day-in-week** and **day-in-month**:
 
@@ -236,20 +235,11 @@ Mon, 01 Oct 2035 is 2099 days away
 -->
 
 
-### Check whether **year is leap**
+## Lunar Calendars
 
-```
-% datediff.sh -l  2032
+Setting `option -m` without an argument shows the moon phase for the current date.
 
-leap year -- 2032
-```
-
-The _exit code is 1_ if a year _is not_ leap.
-
-Set `option -v` to decrease verbose. 
-
-
-### Generate **lunar phase calendar**
+For the monthly calendar:
 
 ```
 % datediff.sh -m  2030-01
@@ -265,23 +255,23 @@ Set `option -v` to decrease verbose.
 2030-01-29  Waning Crescent
 ```
 
-Port of the NetHack `phase_of_the_moon()` code;
-as an approximation, its results may differ slightly from actual moon phases.
-
 For multiple-month calendar:
 
 ```
 % datediff.sh -m  2030-{01..12}
+```
 
-#OR
+Or simply:
 
+```
 % datediff.sh -m  2030
 ```
 
-Setting `option -m` without an argument shows the moon phase for current date.
+Port of the NetHack `phase_of_the_moon()` code;
+as an approximation, its results may differ slightly from actual moon phases.
 
 
-### **Carnaval**, **Easter** and **Corpus Christi**
+## Carnaval, Easter and Corpus Christi
 
 ```
 % datediff.sh -ee  2030
@@ -292,10 +282,10 @@ Setting `option -m` without an argument shows the moon phase for current date.
 ```
 
 Set multiple years to calculate a table of dates:
-<!-- a nice `TSV`-formatted table -->
 
 ```
 % datediff.sh -ee  20{23..30}
+
   Carnaval          Easter      CorpusChristi
 2023-02-21      2023-04-09      2023-06-08
 2024-02-13      2024-03-31      2024-05-30
@@ -307,25 +297,27 @@ Set multiple years to calculate a table of dates:
 2030-03-05      2030-04-21      2030-06-20
 ```
 
+<!-- a nice `TSV`-formatted table -->
+
 The dates are for the _Western_ _Church_.
+
+
+## Leap Year Check
+
+```
+% datediff.sh -l  2032
+
+leap year -- 2032
+```
+
+The _exit code is 1_ if a year _is not_ leap.
+
+Set `option -v` to decrease verbosity.
 
 
 ## More Examples
 
 Check further [examples at the man page](man#examples).
-
-
-## Dependencies
-
-- `Ksh93`, `Bash`, or `Zsh`
-- `GNU`/`BSD`/`AST`/`Busybox` `date` (optional)
-- Basic Calculator `bc` and Desk Calculator `dc` (optional)
-
-
-### Debugging dependencies
-
-- `datedff.debug.sh` script
-- Hroptatyr's `C-code datediff`
 
 
 ## Help
@@ -334,12 +326,27 @@ Please, check script help page with `datediff.sh -h`
 or the [online man page](man/README.md).
 
 
+## Dependencies
+
+- `Ksh93`, `Bash`, or `Zsh`
+- `GNU`/`BSD`/`AST`/`Busybox` `date` (optional)
+- Basic Calculator `bc` (optional)
+
+
+## Debugging Dependencies
+
+- Sourceable [`datediff.debug.sh` script](tests)
+- `C-code date` implementation
+- Hroptatyr's `C-code datediff`
+
+
 ## Project Source
 
 - GitLab <https://gitlab.com/fenixdragao/shelldatediff>
 - GitHub <https://github.com/mountaineerbr/shellDatediff>
 
-Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L186), and [man page](man/README.md).
+Extensively tested, see [testing scripts](tests/),
+[notes](tests/d-test.sh#L78-L186), and [man page](man/README.md).
 
 
 ## See Also
@@ -362,7 +369,7 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 ---
 
 <br />
-<a href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
+<a id="logo-art" href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
   <img width="128" height="128" alt="Datediff.sh script dark theme logo"
   src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-8/datediff_dark-8-128.png">
   &nbsp;&nbsp;&nbsp;
@@ -372,7 +379,7 @@ Extensively tested, see [testing scripts](tests/), [notes](tests/d-test.sh#L78-L
 
 
 <!-- User theme aware --> <!--
-<a href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
+<a id="logo-art" href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-8/datediff_dark-8-128.png">
     <img width="128" height="128" alt="Datediff.sh script logo" src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-8/datediff_light-8-128.png">

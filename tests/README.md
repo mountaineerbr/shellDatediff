@@ -1,41 +1,65 @@
 # Notes
-Following notes are taken from [d-test](d-test.sh#L78-L186).
+Following notes are excerpts taken from [`d-test.sh`](d-test.sh#L87-L178).
 
 ---
 
-Input dates must have time zone, even if set to +00:00, to avoid
-debug checkign errors as `date` programme has got undefined behaviour
-interpreting dates without timezone settings!
+## Testing Log
 
+### v0.30  april/2026
 
-## Log
-### v0.16.6
-Compound range testing:
+Revisiting earlier development history, error and discrepancy rates
+against _Hroptatyr's_ `C-code` `datediff` were initially adopted as the
+primary quality metric. Once shell arithmetics were verified correct,
+that metric lost much of its meaning.
 
-- .35171, about 35% of errors detected in testing are C-code `datediff` only errs (9720/27644).
-- .1554,  about 16% of errors is from wrong shell arithmetics compensation for start-and-end-of-month days. 
-- .10577, about 11% of error testing results are due to shell arithmetics outputting negative days.
-- .04720, at least 5% of other times we are probably right, too, as well as `datediff` (different ways of counting).
+The "script's addons" deliberately reduce granularity in selected
+corner cases so that refinement rules track `c-code datediff` more
+closely. 
+
+Where the two still disagree, results are not wrong. They reflect
+different, typically finer, refinements of the same interval. Both
+implementations remain correct under Hroptatyr's own caveats
+regarding refinement rules.
+
+As of current testing, discrepancy rates in refinements float roughly
+between 0.2% and 3%, or more, depending on the date sample under test.
+
+Programatically, we'd better run the shell code against one
+further datediff implementation to improve diagnosis width.
+
+### v0.16.8 (addon2+addon3)
+Addon3 prevents breaking a full month from count and delivers correct results, specially when dayA is \`31'. 
+
+Result differences remain the same, we detect false-positive errors thanks to addon3 code. We cannot really see bad range results any more but we note that we count differently than C-code `datediff` in some cases.
+
+Testing was performed on 4,405,104 pairs of dates for 1988 vs. 1989 (compound range):
+- .00311, C-code `datediff` error rate is at least 0.3% of total dates tested.
+- .006275, a 0.62% of error rate of total dates tested was produced.
+
+Errors are understood as results that differ from `datediff` and may be false-positive errors (just different counting refinements).
+- .45709, `datediff` errs account for about 45% (12636/27644) of one testing error type (eights and nines as resulting weeks) while our results seems correct in those cases.
+- .03885 `datediff` accounts for almost 4% more errs of another type (start-and-end-of-month dates), while our results seem correct in those cases.
+- .4959, thus almost 50% of testing errors are only `datediff`.
+- Remaining date results match although with different refinements (our results are little more refined than `datediff`).
 
 ### v0.16.7 (addon2)
 - .4570, about 45% of errors detected in testing are C-code `datediff` only errs (12636/27644) (compound range).
 - Result differences remain the same, we detect false-positive errors thanks to addon2 code.
 - It fixes most negative day ranges but takes apart a full month in these cases, which makes result more refined than C-code `datediff` and equally correct.
 
-### v0.16.8 (addon2+addon3)
-- Addon3 prevents breaking a full month from count and delivers correct results, specially when dayA is \`31'. 
-Result differences remain the same, we detect false-positive errors thanks to addon3 code. We cannot really see bad range results any more but we note that we count differently than C-code `datediff` in some cases.
-- Testing was performed on 4,405,104 pairs of dates for 1988 vs. 1989 (compound range):
-- .00311, C-code `datediff` error rate is at least 3% of total dates tested.
-- .006275, a 0,62% of error rate of total dates tested was produced.
-- Errors are understood as results that differ from `datediff` and may be false-positive errors (just different counting refinements).
-- .45709, `datediff` errs account for about 45% (12636/27644) of one testing error type (eights and nines as resulting weeks) while our results seems correct in those cases.
-- .03885 `datediff` accounts for almost 4% more errs of another type (start-and-end-of-month dates), while our results seem correct in those cases.
-- .4959, thus almost 50% of testing errors are only `datediff`.
-- Remaining date results match although with different refinements (our results are little more refined than `datediff`).
+### v0.16.6
+Compound range testing:
+- .35171, about 35% of errors detected in testing are C-code `datediff` only errs (9720/27644).
+- .1554,  about 16% of errors is from wrong shell arithmetics compensation for start-and-end-of-month days. 
+- .10577, about 11% of error testing results are due to shell arithmetics outputting negative days.
+- .04720, at least 5% of other times we are probably right, too, as well as `datediff` (different ways of counting).
 
 
 ## Older Log
+Input dates must have time zone, even if set to +00:00, to avoid
+debug checkign errors as `date` programme has got undefined behaviour
+interpreting dates without timezone settings!
+
 Hroptatyr's `man datediff` says \`\`refinement rules'' cover over 99% cases.
 
 Calculated C-code `datediff` error rate is at least 0.26% of total tested dates (compound range).
@@ -52,13 +76,13 @@ Note `datediff` offset ranges between -14h and +14h.
 
 Offset-aware date results passed checking against \`datediff' as of v0.21.
 
-Ksh exec time is ~2x faster than Bash (main function).
+Hroptatyr datediff legal range: 1601-01-01 and 4095-12-31
 
 
 ## More Notes
 
-### Time zone / Offset support
-dbplunkett: <https://stackoverflow.com/questions/38641982/converting-date-between-timezones-swift>
+### Timezone / Offset support
+dbplunkett <https://stackoverflow.com/questions/38641982/converting-date-between-timezones-swift>
 
 -00:00 and +24:00 are valid and should equal to +00:00; however -0 is denormal;
 support up to \`seconds' for time zone adjustment; POSIX time does not
@@ -87,9 +111,9 @@ Gregorian year 1 BC). In Proleptic Gregorian calendar, year 0000 is leap.
 
 <https://docs.julialang.org/en/v1/stdlib/Dates/>
 
-Serge3leo - https://stackoverflow.com/questions/26861118/rounding-numbers-with-bc-in-bash
+Serge3leo <https://stackoverflow.com/questions/26861118/rounding-numbers-with-bc-in-bash>
 
-MetroEast - https://askubuntu.com/questions/179898/how-to-round-decimals-using-bc-in-bash
+MetroEast <ttps://askubuntu.com/questions/179898/how-to-round-decimals-using-bc-in-bash>
 
 \`\`Rounding is more accurate than chopping/truncation''.
 
@@ -103,6 +127,7 @@ with an integer bit of 1 and can have as few as one significant bit.
 <https://www.lahey.com/float.htm>
 
 
+### Extra documentation
 
     4.3. Unknown Local Offset Convention
        If the time in UTC is known, but the offset to local time is unknown,

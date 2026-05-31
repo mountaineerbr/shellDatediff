@@ -1,4 +1,6 @@
 #!/usr/bin/env ksh
+# d-test.sh  jun/26  by mountaineerbr
+# test main function and compound time range arithmetics
 echo $KSH_VERSION $BASH_VERSION ;date -R
 echo 'USAGE: d-test.sh "[path/datediff.sh]" "[month..]" "[day..]"' >&2
 export DEBUG=2
@@ -7,15 +9,14 @@ export TZ
 src="$HOME/bin/datediff.sh"
 [[ -e $1 ]] && { 	src="$1" ;set -- "${@:2}" ;}
 echo "SOURCE: $src" >&2
-. "$src" -D >&2  #flag -D disables package `date' warping
+. "$src" -D >&2 || ! echo 'err: source' >&2;  #disable `c-code date' warping
+
+function signf { 	((RANDOM%2)) && printf '%s' '+' || printf '%s' '-' ;}
 
 
-function signf { 	((RANDOM%2)) && echo + || echo - ;}
-
-for y in  1988  1989  #also test with: 1940 1941
+for y in  1988  1989  #1969 1968
 do 	for m in ${1:-1 2 3  6  11 12}
 	do 	((${#m}==2)) || m=0$m
-		echo "MONTH=$m"
 		for d in ${2:-1 2 3   27 28 29 30 31}
 		do 	((${#d}==2)) || d=0$d
 			for h in 0 1  12  23
@@ -25,12 +26,14 @@ do 	for m in ${1:-1 2 3  6  11 12}
 					for s in 0 1  59
 					do 	((${#s}==2)) || s=0$s
 	(( d <= $(month_maxday $m $y) )) || continue
-	
+
 	((tzh=RANDOM%15)); ((tzm=RANDOM%60)); ((${#tzh}==2)) || tzh=0$tzh; ((${#tzm}==2)) || tzm=0$tzm
 	D1="$y-$m-${d}T$h:$min:$s$(signf)${tzh:-00}:${tzm:-00}"
-	#dates must have time zone, even if set to +00:00
+	#Input dates must have timezone, even if set to +00:00, to avoid
+	#errors from `date programme' undefined behaviour parsing dates
+	#without timezone offsets.
 
-		for Y in 1989 1988  #also test with: 1941 1940
+		for Y in 1989 1988  #1964 1965
 		do 	for M in 1 2 3  5  10 12
 			do 	((${#M}==2)) || M=0$M
 				for D in 1 2 3 4  27 28 29 30 31
@@ -57,7 +60,12 @@ do 	for m in ${1:-1 2 3  6  11 12}
 			{
 				p=$(mainf "$D1" "$D2") || { 	echo >&2 ;echo "$p" ;}
 			} &
-			printf '\033[2K%s | %s\t(%d) [%d] {%d}\r' "$D1" "$D2" $((++n)) $SECONDS $((n/(SECONDS+1))) >&2
+			printf '\033[2K%s | %s\t[%d, %ds, %d, %d]\r' "$D1" "$D2" $((++n)) $SECONDS $((n/(SECONDS+1))) "${instant_rate:-0}" >&2
+			((n%4096)) || {
+				#keep track of how fast the code is executing
+				instant_rate=$(( (n-n_old)/(SECONDS-seconds_old) ))
+				n_old=$n seconds_old=$SECONDS;
+			};
 							done
 						done
 					done
@@ -65,61 +73,79 @@ do 	for m in ${1:-1 2 3  6  11 12}
 			done
 		done
 					done
-				done 
+				done
 			done
 		done
 	done
 	wait
-	echo "n=$n ($y)"
+	echo $'\n' >&2; echo "n=$n ($y)"
 done
 wait
-echo "N=$n"
+echo $'\n' >&2; echo "N=$n"
 
-#NOTES
-#Input dates must have time zone, even if set to +00:00, to avoid
-#debug checkign errors as `date' programme has got undefined behaviour
-#interpreting dates without timezone settings!
 
-#LOG
-##v0.16.6
-#Compound range testing:
-#.35171, about 35% of errors detected in testing are `datediff' only errs (9720/27644).
-#.1554,  about 16% of errors is from wrong shell arithmetics compensation for start-and-end-of-month days. 
-#.10577, about 11% of error testing results are due to shell arithmetics outputting negative days.
-#.04720, at least 5% of other times we are probably right, too, as well as `datediff' (different ways of counting).
+# TESTING LOG
+## v0.30  april/2026
+# Revisiting earlier development history, error and discrepancy rates
+# against Hroptatyr's C-code `datediff' were initially adopted as the
+# primary quality metric. Once shell arithmetics were verified correct,
+# that metric lost much of its meaning.
 #
-##v0.16.7    (addon2)
-#.4570, about 45% of errors detected in testing are `datediff' only errs (12636/27644) (compound range).
-#Result differences remain the same, we detect false-positive errors thanks to addon2 code.
-#It fixes most negative day ranges but takes apart a full month in these cases, which makes result more refined than `datediff' and equally correct.
+# The script's `addons' deliberately reduce granularity in selected
+# corner cases so that refinement rules track `c-code datediff' more
+# closely.
 #
-##v0.16.8    (addon2+addon3)
-#Addon3 prevents breaking a full month from count and delivers correct results, specially when dayA is `31'. 
-#Result differences remain the same, we detect false-positive errors thanks to addon3 code. We cannot really see bad range results any more but we note that we count differently than `datediff' in some cases.
+# Where the two still disagree, results are not wrong. They reflect
+# different, typically finer, refinements of the same interval. Both
+# implementations remain correct under Hroptatyr's own caveats
+# regarding refinement rules.
 #
-#Testing was performed on 4,405,104 pairs of dates for 1988 vs. 1989 (compound range):
-#.00311, `datediff' error rate is at least 3% of total dates tested.
-#.006275, a 0,62% of error rate of total dates tested was produced.
-#Errors are understood as results that differ from `datediff' and may be false-positive errors (just different counting refinements).
-#.45709, `datediff' errs account for about 45% (12636/27644) of one testing error type (eights and nines as resulting weeks) while our results seems correct in those cases.
-#.03885 `datediff' accounts for almost 4% more errs of another type (start-and-end-of-month dates), while our results seem correct in those cases.
-#.4959, thus almost 50% of testing errors are only `datediff'.
-#Remaining date results match although with different refinements (our results are little more refined than `datediff').
+# As of current testing, discrepancy rates in refinements float roughly
+# between 0.2% and 3%, or more, depending on the date sample under test.
+#
+# Programatically, we'd better run the shell code against one
+# further datediff implementation to improve diagnosis width.
+#
+## v0.16.8  (addon2+addon3)
+# Addon3 prevents breaking a full month from count and delivers correct results, specially when dayA is `31'.
+# Result differences remain the same, we detect false-positive errors thanks to addon3 code. We cannot really see bad range results any more but we note that we count differently than `datediff' in some cases.
+#
+# Testing was performed on 4,405,104 pairs of dates for 1988 vs. 1989 (compound range):
+#  .00311, `datediff' error rate is at least 0.3% of total dates tested.
+#  .006275, a 0.62% of error rate of total dates tested was produced.
+# Errors are understood as results that differ from `datediff' and may be false-positive errors (just different counting refinements).
+#  .45709, `datediff' errs account for about 45% (12636/27644) of one testing error type (eights and nines as resulting weeks) while our results seems correct in those cases.
+#  .03885 `datediff' accounts for almost 4% more errs of another type (start-and-end-of-month dates), while our results seem correct in those cases.
+#  .4959, thus almost 50% of testing errors are only `datediff'.
+# Remaining date results match although with different refinements (our results are little more refined than `datediff').
+#
+## v0.16.7  (addon2)
+#  .4570, about 45% of errors detected in testing are `datediff' only errs (12636/27644) (compound range).
+# Result differences remain the same, we detect false-positive errors thanks to addon2 code.
+# It fixes most negative day ranges but takes apart a full month in these cases, which makes result more refined than `datediff' and equally correct.
+#
+## v0.16.6
+# Compound range testing:
+#  .35171, about 35% of errors detected in testing are `datediff' only errs (9720/27644).
+#  .1554,  about 16% of errors is from wrong shell arithmetics compensation for start-and-end-of-month days.
+#  .10577, about 11% of error testing results are due to shell arithmetics outputting negative days.
+#  .04720, at least 5% of other times we are probably right, too, as well as `datediff' (different ways of counting).
 
-#OLDER LOG FROM SCRIPT SOURCE
+
+# OLDER LOG FROM SCRIPT SOURCE
 # Hroptatyr's `man datediff' says ``refinement rules'' cover over 99% cases.
 # Calculated C-code `datediff' error rate is at least 0.26% of total tested dates (compound range).
 # Results differ from C-code `datediff' in the ~0.6% of all tested dates in script v0.21 (compound range).
 # All differences occur with ``end-of-month vs. start-of-month'' dates, such as days `29, 30 or 31' of one date against days `1, 2 or 3' of the other date.
 # Different results from C-code `datediff' in compound range are not necessarily errors in all cases and may be considered correct albeit with different refinements. This seems to be the case for most, if not all, other differences obtained in testing results.
-# A bug was fixed in v0.20 in which UNIX time generationw was affected. No errors were found in range (seconds) calculation since. 
+# A bug was fixed in v0.20 in which UNIX time generationw was affected. No errors were found in range (seconds) calculation since.
 # Note `datediff' offset ranges between -14h and +14h.
 # Offset-aware date results passed checking against `datediff' as of v0.21.
-#Ksh exec time is ~2x faster than Bash (main function).
+# Hroptatyr datediff legal range: 1601-01-01 and 4095-12-31
 #
-#NOTES
+## NOTES
 ##Time zone / Offset support
-#dbplunkett: <https://stackoverflow.com/questions/38641982/converting-date-between-timezones-swift>
+#dbplunkett <https://stackoverflow.com/questions/38641982/converting-date-between-timezones-swift>
 #-00:00 and +24:00 are valid and should equal to +00:00; however -0 is denormal;
 #support up to `seconds' for time zone adjustment; POSIX time does not
 #account for leap seconds; POSIX time zone definition by the $TZ variable
@@ -139,8 +165,8 @@ echo "N=$n"
 #for all calendar numbering systems (where year zero coincides with the
 #Gregorian year 1 BC). In Proleptic Gregorian calendar, year 0000 is leap.
 #<https://docs.julialang.org/en/v1/stdlib/Dates/>
-#Serge3leo - https://stackoverflow.com/questions/26861118/rounding-numbers-with-bc-in-bash
-#MetroEast - https://askubuntu.com/questions/179898/how-to-round-decimals-using-bc-in-bash
+#Serge3leo <https://stackoverflow.com/questions/26861118/rounding-numbers-with-bc-in-bash>
+#MetroEast <https://askubuntu.com/questions/179898/how-to-round-decimals-using-bc-in-bash>
 #``Rounding is more accurate than chopping/truncation''.
 #https://wiki.math.ntnu.no/_media/ma2501/2016v/lecture1-intro.pdf
 ##Negative zeros have some subtle properties that will not be evident in
@@ -148,16 +174,15 @@ echo "N=$n"
 #A denormal is a number whose magnitude is too small to be represented
 #with an integer bit of 1 and can have as few as one significant bit.
 #https://www.lahey.com/float.htm
-##4.3. Unknown Local Offset Convention
-##   If the time in UTC is known, but the offset to local time is unknown,
-##   this can be represented with an offset of "-00:00".  This differs
-##   semantically from an offset of "Z" or "+00:00", which imply that UTC
-##   is the preferred reference point for the specified time.  RFC2822
-##   [IMAIL-UPDATE] describes a similar convention for email.
 
-#Hroptatyr datediff: 1601-01-01 and ending 4095-12-31
-
-
+# EXTRA DOCUMENTATION
+#4.3. Unknown Local Offset Convention
+#   If the time in UTC is known, but the offset to local time is unknown,
+#   this can be represented with an offset of "-00:00".  This differs
+#   semantically from an offset of "Z" or "+00:00", which imply that UTC
+#   is the preferred reference point for the specified time.  RFC2822
+#   [IMAIL-UPDATE] describes a similar convention for email.
+#
 #LIMITS
 #	Testing on ARM reveals that shell arithmetics can only count up
 #	to 2,147,483,647 seconds (~68 years) for the FP results of single
@@ -186,5 +211,4 @@ echo "N=$n"
 #	but accurate determination of the full moon and the vernal equinox
 #	is quite complex in reality, and simpler approximations are used
 #	in practice'' -- Dershowitz and Reingold.
-
 

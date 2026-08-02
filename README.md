@@ -103,7 +103,7 @@ It also influences how the underlying `C-code date` programme processes dates.
 Calculate the age of the Apollo 11 mission at the moment of landing:
 
 ```
-% datediff.sh -u  "1969-07-20T20:17:40Z"  "now"
+% datediff.sh -u2  "1969-07-20T20:17:40Z"  "now"
 ```
 
 Mind that input dates must be ISO-8601 or UNIX time.
@@ -361,7 +361,7 @@ Extensively tested, see [testing scripts](tests/),
 
 <!--
 
-	Please, consider sending me a nickle!
+	Please, consider sending me a nickel!
 		=) 	bc1qlxm5dfjl58whg6tvtszg5pfna9mn2cr2nulnjr
 
         -->

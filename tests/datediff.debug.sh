@@ -1,14 +1,16 @@
 # datediff.debug.sh
-# jun/2026   mountaineerbr
+# aug/2026   mountaineerbr
 # run checks against `c-code datediff' and `c-code date'
 # this function must be under `$PATH' or `$PWD' to be sourced
 
 #Execute result checks against c-code `datediff' and `date'.
 #GNU date preferably. Input must be well-formatted ISO8601.
 #The function expects UTC while `date' may set random offsets.
-function debugf
+# POSIX syntax required here so ksh93 uses dynamic scope
+# to inspect local variables in the caller's frame.
+debugf()
 {
-		unset unix2t unix1t buf d_cmd ranget utc2t utc1t rfc2t rfc1t ddout y_dd mo_dd w_dd d_dd h_dd m_dd s_dd dd brk ret
+		unset unix2t unix1t buf d_cmd ranget utc2t utc1t rfc2t rfc1t ddout y_dd mo_dd w_dd d_dd h_dd m_dd s_dd dd brk  #ret
 		d_cmd="$DATE_CMD" DATE_CMD="${DATE_CMD_DEBUG:-date}"
 
 		[[ $d_cmd = [Ff][Aa][Ll][Ss][Ee] ]] && [[ -z $TZ ]] && TZ=UTC+0
@@ -39,6 +41,7 @@ function debugf
 		ddout=$(datediff -f'%Y %m %w %d  %H %M %S' "${1:-$utc1t}" "${2:-$utc2t}") || ((ret+=250))
 		read y_dd mo_dd w_dd d_dd  h_dd m_dd s_dd <<<"$ddout"
 		dd=(${y_dd#-} $mo_dd $w_dd $d_dd  $h_dd $m_dd $s_dd)
+		#sh=("$y" "$mo" "$w" "$d"  "$h" "$m" "$s")  #inherited from mainf()
 
 		{ 	{ 	{ [[ ${date2_iso8601:0:25}    = ${utc2t:0:25} ]] &&
 				  [[ ${date1_iso8601:0:25}    = ${utc1t:0:25} ]] #iso
@@ -63,7 +66,7 @@ function debugf
 "${unix1} ${unix1t} | $brk"\
 "${unix2} ${unix2t} | $brk"\
 "${range} ${ranget} | $brk"\
-"sh=${sh[*]} dd=${dd[*]}"
+"sh=${sh[*]:-err} dd=${dd[*]:-err}"
 			((ret+=1))
 		}
 		DATE_CMD="$d_cmd"

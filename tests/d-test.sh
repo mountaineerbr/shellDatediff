@@ -1,66 +1,85 @@
 #!/usr/bin/env ksh
-# d-test.sh  jun/26  by mountaineerbr
+# d-test.sh  oct/26  by mountaineerbr
 # test main function and compound time range arithmetics
-echo $KSH_VERSION $BASH_VERSION ;date -R
+echo $KSH_VERSION $BASH_VERSION $ZSH_VERSION; date -R; echo "PID: $$" >&2
 echo 'USAGE: d-test.sh "[path/datediff.sh]" "[month..]" "[day..]"' >&2
-export DEBUG=2
-export TZ
+export DATE_DEBUG=2 DEBUG=2 LC_TIME=C;
+[[ -n ${TZ+1} ]] && export TZ;
+#export TZ=UTC LC_ALL=C
 
 src="$HOME/bin/datediff.sh"
-[[ -e $1 ]] && { 	src="$1" ;set -- "${@:2}" ;}
-echo "SOURCE: $src" >&2
-. "$src" -D >&2 || ! echo 'err: source' >&2;  #disable `c-code date' warping
+echo "SOURCE: \`$src'" >&2
+[[ -e $1 ]] && { 	src="$1"; set -- "${@:2}" ;}
+
+. "$src" -D  >&2  #opt -D disables `c-code date' warping
+echo "SOURCE: exit -- \`${?}'" >&2; OPTIND=1 OPTARG=;
+
+
+TIME_ISO8601_FMT_PF='%04d-%02d-%02dT%02d:%02d:%02d%.1s%02d%02d%02d' #no colon tz
 
 function signf { 	((RANDOM%2)) && printf '%s' '+' || printf '%s' '-' ;}
+#SIGN='+-';  #usage: zsh5 compat: "${SIGN: RANDOM%2:1}"
 
 
 for y in  1988  1989  #1969 1968
 do 	for m in ${1:-1 2 3  6  11 12}
-	do 	((${#m}==2)) || m=0$m
+	do
+		maxday=$(month_maxday "${m##0}" "${y##0}") || exit 1
 		for d in ${2:-1 2 3   27 28 29 30 31}
-		do 	((${#d}==2)) || d=0$d
+		do
+			(( d <= maxday )) || continue
 			for h in 0 1  12  23
-			do 	((${#h}==2)) || h=0$h
+			do
 				for min in 0 1  59
-				do 	((${#min}==2)) || min=0$min
+				do
 					for s in 0 1  59
-					do 	((${#s}==2)) || s=0$s
-	(( d <= $(month_maxday $m $y) )) || continue
+					do
+	((tzh = RANDOM % 12, tzm = RANDOM % 60))
+	#freebsd timezone range: -1200 to +1400. 
 
-	((tzh=RANDOM%15)); ((tzm=RANDOM%60)); ((${#tzh}==2)) || tzh=0$tzh; ((${#tzm}==2)) || tzm=0$tzm
-	D1="$y-$m-${d}T$h:$min:$s$(signf)${tzh:-00}:${tzm:-00}"
-	#Input dates must have timezone, even if set to +00:00, to avoid
-	#errors from `date programme' undefined behaviour parsing dates
+	D1=$(printf "${TIME_ISO8601_FMT_PF:0:41}" \
+	"${y}" "${m}" "${d}" \
+	"${h}" "${min}" "${s}" \
+	"$(signf)" "${tzh:-0}" "${tzm:-0}")
+
+	#Input dates must have timezone, even if set to +0000, to avoid
+	#errors from `c-code date' undefined behaviour parsing dates
 	#without timezone offsets.
 
 		for Y in 1989 1988  #1964 1965
 		do 	for M in 1 2 3  5  10 12
-			do 	((${#M}==2)) || M=0$M
+			do
+				MAXDAY=$(month_maxday "${M##0}" "${Y##0}") || exit 1
 				for D in 1 2 3 4  27 28 29 30 31
-				do 	((${#D}==2)) || D=0$D
+				do
+					(( D <= MAXDAY )) || continue
 					for H in 0 1    23
-					do 	((${#H}==2)) || H=0$H
+					do
 						for MIN in 0 1  58
-						do 	((${#MIN}==2)) || MIN=0$MIN
+						do
 							for S in 0 1  58
-							do 	((${#S}==2)) || S=0$S
-			(( D <= $(month_maxday $M $Y) )) || continue
+							do
+			((tzh = RANDOM % 12, tzm = RANDOM % 60))
 
-			((tzh=RANDOM%15)); ((tzm=RANDOM%60)); ((${#tzh}==2)) || tzh=0$tzh; ((${#tzm}==2)) || tzm=0$tzm
-			D2="$Y-$M-${D}T$H:$MIN:$S$(signf)${tzh:-00}:${tzm:-00}"
+			D2=$(printf "${TIME_ISO8601_FMT_PF:0:41}" \
+			"${Y}" "${M}" "${D}" \
+			"${H}" "${MIN}" "${S}" \
+			"$(signf)" "${tzh:-0}" "${tzm:-0}")
 
-			#$TZ OFFSET/TIME-ZONE TEST
-			((TZ_neg = n%2?+1:-1 ))
-			((TZh = RANDOM%15 )); ((TZm = RANDOM%60 ))
-			[[ $TZ_neg != -* ]] && TZ_neg=+$TZ_neg
-			((${#TZh}==1)) && TZh=0$TZh
-			((${#TZm}==1)) && TZm=0$TZm
-			TZ=UTC${TZ_neg%1}$TZh:$TZm
+
+			#OFFSET / TIME-ZONE
+			((TZh = RANDOM % 12, TZm = RANDOM % 60))
+			TZ=$(printf '%s%.1s%02d%02d' "UTC" "$(signf)" "${TZh:-0}" "${TZm:-0}")
 
 			{
-				p=$(mainf "$D1" "$D2") || { 	echo >&2 ;echo "$p" ;}
+				p=$(mainf "$D1" "$D2") || { 	printf '\n' >&2; printf '%s\n' "$p" ;}
 			} &
-			printf '\033[2K%s | %s\t[%d, %ds, %d, %d]\r' "$D1" "$D2" $((++n)) $SECONDS $((n/(SECONDS+1))) "${instant_rate:-0}" >&2
+			printf '\033[2K%s | %s\t[%d, %.0fs, %.0f, %.0f]\r' \
+			    "$D1" "$D2" "$((++n))" "$SECONDS" \
+			    "$((n / (SECONDS + 1) ))" "${instant_rate:-0}" >&2
+
+
+			((n%50000)) || echo >&2;
 			((n%4096)) || {
 				#keep track of how fast the code is executing
 				instant_rate=$(( (n-n_old)/(SECONDS-seconds_old) ))
@@ -82,18 +101,40 @@ do 	for m in ${1:-1 2 3  6  11 12}
 done
 wait
 echo $'\n' >&2; echo "N=$n"
+#defaults to ~8,710,092 runs
 
 
 # TESTING LOG
+## v0.31  october/2026
+# Reworked compound-range refinement rules to preserve
+# monotonic results across moving comparison windows.
+# Removed buggy addon2 and addon3 completely.
+#
+# Testing sample sizes were about 4M date pairs at each run from
+# one data-set (1988..1989). Script v0.31r was subsequently
+# tested against additional 2M date pairs from (1969..1968).
+#
+#    version | differences against c-code datediff 0.4.12
+#    v0.31r  |    0.00%  --  none observed
+#    v0.31a  |   ~0.27%  --  shell with finer granularity
+#    v0.30   |   ~0.53%  -- ~0.26% (49%) caused by buggy rules
+#
+# Fixed all identified month-boundary cases. No remaining discrepancies
+# from `C-code` `date` and `datediff' were confirmed as true positives
+# in tested samples.
+#
+# Different `C-code date' implementations work better with
+# ISO timezone offsets without colons, such as `±hhmm' (`%z').
+#
 ## v0.30  april/2026
 # Revisiting earlier development history, error and discrepancy rates
 # against Hroptatyr's C-code `datediff' were initially adopted as the
-# primary quality metric. Once shell arithmetics were verified correct,
-# that metric lost much of its meaning.
+# primary quality metric. Once shell arithmetics had been verified as
+# correct, quality assessment needed to go beyond that single metric.
 #
 # The script's `addons' deliberately reduce granularity in selected
 # corner cases so that refinement rules track `c-code datediff' more
-# closely.
+# closely.   [update: addons2,3 were later found buggy]
 #
 # Where the two still disagree, results are not wrong. They reflect
 # different, typically finer, refinements of the same interval. Both
@@ -103,7 +144,7 @@ echo $'\n' >&2; echo "N=$n"
 # As of current testing, discrepancy rates in refinements float roughly
 # between 0.2% and 3%, or more, depending on the date sample under test.
 #
-# Programatically, we'd better run the shell code against one
+# Programmatically, we'd better run the shell code against one
 # further datediff implementation to improve diagnosis width.
 #
 ## v0.16.8  (addon2+addon3)
@@ -112,9 +153,9 @@ echo $'\n' >&2; echo "N=$n"
 #
 # Testing was performed on 4,405,104 pairs of dates for 1988 vs. 1989 (compound range):
 #  .00311, `datediff' error rate is at least 0.3% of total dates tested.
-#  .006275, a 0.62% of error rate of total dates tested was produced.
+#  .006275, 0.62% error rate of total dates tested was produced.
 # Errors are understood as results that differ from `datediff' and may be false-positive errors (just different counting refinements).
-#  .45709, `datediff' errs account for about 45% (12636/27644) of one testing error type (eights and nines as resulting weeks) while our results seems correct in those cases.
+#  .45709, `datediff' errs account for about 45% (12636/27644) of one testing error type (eights and nines as resulting weeks) while our results seem correct in those cases.
 #  .03885 `datediff' accounts for almost 4% more errs of another type (start-and-end-of-month dates), while our results seem correct in those cases.
 #  .4959, thus almost 50% of testing errors are only `datediff'.
 # Remaining date results match although with different refinements (our results are little more refined than `datediff').
@@ -189,7 +230,7 @@ echo $'\n' >&2; echo "N=$n"
 #	units of time interval. That number is one decrement below
 #	(2^32 / 2) = (4294967296 / 2) = 2147483648  because there is no
 #	bits left for a double point after that (there is still a bit left
-#	for the sign). That is why Bc is prefered instead of shell FP
+#	for the sign). That is why Bc is preferred instead of shell FP
 #	arithmetics. On desktop architecture, shell FP maths may work
 #	with a broader range.
 #

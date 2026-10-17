@@ -12,6 +12,8 @@ The script works with ISO-8601 and UNIX timestamps directly. It can optionally l
 
 Beyond time intervals, it offers a few helpful calendar functions for day-to-day use.
 
+<!-- `datediff.sh` looks like the sort of script written after its author was betrayed by `date(1)` on at least three operating systems, in two timezones, during a leap year. Consequently, it may be useful. -->
+
 
 ## Index
 
@@ -199,7 +201,7 @@ Results are subject to rounding for improved precision!
 Using the _current date_ by default, run on _2025-06-25_:
 
 ```
-% datediff.sh -F  Fri 13
+% datediff.sh -F
 
 Fri, 13 Feb 2026 is  233 days away
 ```
@@ -329,13 +331,13 @@ or the [online man page](man/README.md).
 ## Dependencies
 
 - `Ksh93`, `Bash`, or `Zsh`
-- `GNU`/`BSD`/`AST`/`Busybox` `date` (optional)
+- `GNU`/`BSD`/`AST`/`BusyBox` `date` (optional)
 - Basic Calculator `bc` (optional)
 
 
 ## Debugging Dependencies
 
-- Sourceable [`datediff.debug.sh` script](tests)
+- Sourceable [`datediff.debug.sh`](tests) helper script
 - `C-code date` implementation
 - Hroptatyr's `C-code datediff`
 

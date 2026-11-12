@@ -1,6 +1,6 @@
-DATEDIFF.SH(1) v0.31 | General Commands Manual
+DATEDIFF.SH(1) v0.31.1 | General Commands Manual
 Jamil Soni N
-October 2026
+November 2026
 
 NAME
 
@@ -8,7 +8,7 @@ NAME
 
 SYNOPSIS
 
-   datediff.sh [-Rrttuvvv] [-NUM] [-f "FMT"] DATE1 DATE2 [UNIT]
+   datediff.sh [-RRrttuvvv] [-NUM] [-f "FMT"] DATE1 DATE2 [UNIT]
    datediff.sh -FF [-v] [[DAY_IN_WEEK] [DAY_IN_MONTH]] [START_DATE]
    datediff.sh -ee [-v] YEAR …
    datediff.sh -l [-v] YEAR …
@@ -102,9 +102,10 @@ Miscellaneous
 
   Suppress bold formatting (text highlighting) in output.
 
--R
+-R, -RR
 
-  Output dates in RFC-5322 format.
+  Output dates in RFC 5322 format. Repeat the option to use names from
+  the current time locale where supported.
 
 -v
 
@@ -149,7 +150,10 @@ H, M, or S, the corresponding single-unit time interval is printed to
 stdout.
 
 The “DATES” output section prints input dates as UNIX times and ISO-8601
-dates, or as RFC-5322 dates if option -R is set.
+dates, or as RFC 5322 dates if option -R is set.
+
+If specified more than once, as in -RR, output weekday and month
+abbreviations from the current time locale, where supported.
 
 Option -u sets the environment variable “$TZ=UTC” and operates
 internally in Coordinated Universal Time (UTC). Note that this affects
@@ -225,6 +229,12 @@ DATE_CMD
   Path for the C-code date command.
 
   GNU, BSD, AST, BusyBox and Toybox date are supported.
+
+LC_TIME
+
+  Locale for weekday and month names in RFC 5322-style output with
+  options -RR, where supported. Nonempty LC_ALL takes precedence; LANG
+  spplies the default.
 
 TZ
 

@@ -1,5 +1,5 @@
 # Notes
-Following notes are excerpts taken from [`d-test.sh`](d-test.sh#L105-L213).
+Following notes are excerpts taken from [`d-test.sh`](d-test.sh#L107-L219).
 
 ---
 
@@ -186,9 +186,9 @@ with an integer bit of 1 and can have as few as one significant bit.
     
     	Please check limitations of `date' programme of your system!
     
-    	The moon phase function (adapted and improved from HackLib) is
-    	a quantized version (only 8 phases) of formula and is only an
-    	approximation of reality.
+    	The moon phase function (adapted from HackLib) is a quantized
+    	version of formula (8 phases) and is only an approximation
+    	of reality.
     
     	``The definition of Easter as `the first Sunday after the first
     	full moon occurring on or after the vernal equinox' seems precise,

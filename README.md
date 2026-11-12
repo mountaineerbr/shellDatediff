@@ -1,16 +1,18 @@
 # shellDatediff
-Calculate time differences with shell builtins.
-
+Calculate time differences with shell builtins and shell arithmetics.
 
 ![Showing off datediff.sh script](https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_intro.gif)
 
-Shell utility for calculating time intervals between dates. Works with Ksh, Bash, and Zsh.
+A small shell library to calculate **the time between two dates** as
+**compound time ranges** or **single-unit intervals**, with fractional results.
+Works with Ksh93, Bash, and Zsh.
 
-The project contains a small shell library to calculate **elapsed time between dates** as **compound time ranges** and as **single-unit fractions**.
+ISO 8601 dates and UNIX timestamps are supported natively. The script
+can optionally leverage `C-code date` to process other input date formats.
 
-The script works with ISO-8601 and UNIX timestamps directly. It can optionally leverage `C-code date` to process diverse date formats as input.
-
-Beyond time intervals, it offers a few helpful calendar functions for day-to-day use.
+It also offers a few helpful calendar functions: check leap years, generate
+lunar calendars, calculate Easter, Carnaval, and Corpus Christi dates —
+or find the next Friday the 13th.
 
 <!-- `datediff.sh` looks like the sort of script written after its author was betrayed by `date(1)` on at least three operating systems, in two timezones, during a leap year. Consequently, it may be useful. -->
 
@@ -108,7 +110,7 @@ Calculate the age of the Apollo 11 mission at the moment of landing:
 % datediff.sh -u2  "1969-07-20T20:17:40Z"  "now"
 ```
 
-Mind that input dates must be ISO-8601 or UNIX time.
+Mind that input dates must be ISO 8601 or UNIX time.
 When available, `C-code date` is used to parse
 user input in various date formats.
 
@@ -331,7 +333,7 @@ or the [online man page](man/README.md).
 ## Dependencies
 
 - `Ksh93`, `Bash`, or `Zsh`
-- `GNU`/`BSD`/`AST`/`BusyBox` `date` (optional)
+- `GNU`/`BSD`/`AST`/`BusyBox`/`Toybox` `date` (optional)
 - Basic Calculator `bc` (optional)
 
 
@@ -348,7 +350,7 @@ or the [online man page](man/README.md).
 - GitHub <https://github.com/mountaineerbr/shellDatediff>
 
 Extensively tested, see [testing scripts](tests/),
-[notes](tests/d-test.sh#L78-L186), and [man page](man/README.md).
+[notes](tests/d-test.sh#L107-L219), and [man page](man/README.md).
 
 
 ## See Also
@@ -373,18 +375,18 @@ Extensively tested, see [testing scripts](tests/),
 <br />
 <a id="logo-art" href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
   <img width="128" height="128" alt="Datediff.sh script dark theme logo"
-  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-8/datediff_dark-8-128.png">
+  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-9/datediff_dark-9-128.png">
   &nbsp;&nbsp;&nbsp;
   <img width="128" height="128" alt="Datediff.sh script light theme logo"
-  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-8/datediff_light-8-128.png">
+  src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-9/datediff_light-9-128.png">
 </p></a>
 
 
 <!-- User theme aware --> <!--
 <a id="logo-art" href="https://gitlab.com/fenixdragao/shelldatediff"><p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-8/datediff_dark-8-128.png">
-    <img width="128" height="128" alt="Datediff.sh script logo" src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-8/datediff_light-8-128.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-9/datediff_dark-9-128.png">
+    <img width="128" height="128" alt="Datediff.sh script logo" src="https://gitlab.com/mountaineerbr/etc/-/raw/main/gfx/datediff_logo/out-9/datediff_light-9-128.png">
   </picture>
 </p></a>
 -->

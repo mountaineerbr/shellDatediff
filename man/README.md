@@ -1,8 +1,8 @@
 ---
 author:
 - Jamil Soni N
-date: October 2026
-title: DATEDIFF.SH(1) v0.31 \| General Commands Manual
+date: November 2026
+title: DATEDIFF.SH(1) v0.31.1 \| General Commands Manual
 ---
 
 # NAME
@@ -11,7 +11,7 @@ title: DATEDIFF.SH(1) v0.31 \| General Commands Manual
 
 # SYNOPSIS
 
-   **datediff.sh** \[-Rrttuvvv\] \[-*NUM*\] \[-f *"FMT"*\] *DATE1*
+   **datediff.sh** \[-RRrttuvvv\] \[-*NUM*\] \[-f *"FMT"*\] *DATE1*
 *DATE2* \[*UNIT*\]\
    **datediff.sh** **-FF** \[-v\] \[\[*DAY_IN_WEEK*\]
 \[*DAY_IN_MONTH*\]\] \[*START_DATE*\]\
@@ -95,8 +95,9 @@ Print the script help page.
 **-k**  
 Suppress bold formatting (text highlighting) in output.
 
-**-R**  
-Output dates in RFC-5322 format.
+**-R**, **-RR**  
+Output dates in RFC 5322 format. Repeat the option to use names from the
+current time locale where supported.
 
 **-v**  
 Decrease or change verbosity mode.
@@ -140,7 +141,10 @@ When the last positional parameter *UNIT* is exactly one of *Y*, *MO*,
 interval is printed to stdout.
 
 The “DATES” output section prints input dates as **UNIX times** and
-**ISO-8601 dates**, or as **RFC-5322 dates** if **option -R** is set.
+**ISO-8601 dates**, or as **RFC 5322 dates** if **option -R** is set.
+
+If specified more than once, as in **-RR**, output weekday and month
+abbreviations from the current time locale, where supported.
 
 **Option -u** sets the environment variable “\$TZ=UTC” and operates
 internally in Coordinated Universal Time (UTC). Note that this affects
@@ -216,6 +220,11 @@ For the full testing log, check `d-test.sh` at the project repository.
 Path for the `C-code` `date` command.
 
 `GNU`, `BSD`, `AST`, `BusyBox` and `Toybox` `date` are supported.
+
+**LC_TIME**  
+Locale for weekday and month names in **RFC 5322-style** output with
+**options -RR**, where supported. Nonempty **LC_ALL** takes precedence;
+**LANG** spplies the default.
 
 **TZ**  
 `POSIX` timezone offset. The offset must be in the format

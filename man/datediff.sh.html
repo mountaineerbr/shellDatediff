@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc 3.11" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Jamil Soni N" />
-  <title>DATEDIFF.SH(1) v0.31 | General Commands Manual</title>
+  <title>DATEDIFF.SH(1) v0.31.1 | General Commands Manual</title>
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -176,15 +176,15 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">DATEDIFF.SH(1) v0.31 | General Commands Manual</h1>
+<h1 class="title">DATEDIFF.SH(1) v0.31.1 | General Commands Manual</h1>
 <p class="author">Jamil Soni N</p>
-<p class="date">October 2026</p>
+<p class="date">November 2026</p>
 </header>
 <h1 id="name">NAME</h1>
 <div class="line-block">   <strong>datediff.sh</strong> - Calculate time
 ranges / intervals between dates</div>
 <h1 id="synopsis">SYNOPSIS</h1>
-<div class="line-block">   <strong>datediff.sh</strong> [-Rrttuvvv]
+<div class="line-block">   <strong>datediff.sh</strong> [-RRrttuvvv]
 [-<em>NUM</em>] [-f <em>"FMT"</em>] <em>DATE1</em> <em>DATE2</em>
 [<em>UNIT</em>]<br />
    <strong>datediff.sh</strong> <strong>-FF</strong> [-v]
@@ -284,9 +284,10 @@ mins..</em>”).</p>
 <dd>
 <p>Suppress bold formatting (text highlighting) in output.</p>
 </dd>
-<dt><strong>-R</strong></dt>
+<dt><strong>-R</strong>, <strong>-RR</strong></dt>
 <dd>
-<p>Output dates in RFC-5322 format.</p>
+<p>Output dates in RFC 5322 format. Repeat the option to use names from
+the current time locale where supported.</p>
 </dd>
 <dt><strong>-v</strong></dt>
 <dd>
@@ -327,9 +328,11 @@ integer.</p>
 or <em>S</em>, the corresponding <em>single-unit</em> time interval is
 printed to stdout.</p>
 <p>The “DATES” output section prints input dates as <strong>UNIX
-times</strong> and <strong>ISO-8601 dates</strong>, or as
-<strong>RFC-5322 dates</strong> if <strong>option -R</strong> is
-set.</p>
+times</strong> and <strong>ISO-8601 dates</strong>, or as <strong>RFC
+5322 dates</strong> if <strong>option -R</strong> is set.</p>
+<p>If specified more than once, as in <strong>-RR</strong>, output
+weekday and month abbreviations from the current time locale, where
+supported.</p>
 <p><strong>Option -u</strong> sets the environment variable “$TZ=UTC”
 and operates internally in Coordinated Universal Time (UTC). Note that
 this affects how the <code>C-code date</code> programme processes
@@ -403,6 +406,13 @@ repository.</p>
 <p><code>GNU</code>, <code>BSD</code>, <code>AST</code>,
 <code>BusyBox</code> and <code>Toybox</code> <code>date</code> are
 supported.</p>
+</dd>
+<dt><strong>LC_TIME</strong></dt>
+<dd>
+<p>Locale for weekday and month names in <strong>RFC 5322-style</strong>
+output with <strong>options -RR</strong>, where supported. Nonempty
+<strong>LC_ALL</strong> takes precedence; <strong>LANG</strong> spplies
+the default.</p>
 </dd>
 <dt><strong>TZ</strong></dt>
 <dd>
